@@ -1,13 +1,8 @@
-/* ══════════════════════════════════════════
-   ELITE COFFEE — Theme Toggle
-   js/theme.js
-   ══════════════════════════════════════════ */
-
 const Theme = {
   init() {
     const saved = localStorage.getItem('ec_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', saved);
-    this._updateToggle(saved);
+    this._updateBtn(saved);
   },
 
   toggle() {
@@ -15,13 +10,11 @@ const Theme = {
     const next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('ec_theme', next);
-    this._updateToggle(next);
+    this._updateBtn(next);
   },
 
-  _updateToggle(theme) {
-    const toggles = document.querySelectorAll('.theme-toggle');
-    toggles.forEach(t => {
-      t.setAttribute('data-theme', theme);
-    });
+  _updateBtn(theme) {
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
   },
 };

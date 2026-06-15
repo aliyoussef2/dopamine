@@ -1,396 +1,584 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Elite Coffee – Coffee, Crepes, Pasta & Saj. Bakhoun Highway, North Lebanon. Est. 2026."/>
-  <title>Elite Coffee – Bakhoun Highway</title>
-
-  <!-- Fonts -->
+  <title>Admin Panel â€” Elite Coffee</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold:#C9A84C;--gold-light:#E8D08A;--gold-dark:#9A7630;
+      --bg:#0C0A08;--bg-2:#131009;--bg-3:#1A1610;
+      --text:#F0E8DC;--text-2:#B8A890;--text-3:#6E6050;
+      --card:#131009;--border:#241E14;
+      --font-serif:'Cormorant Garamond',serif;
+      --font-sans:'DM Sans',sans-serif;
+      --radius:12px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{font-size:16px;}
+    body{font-family:var(--font-sans);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
+    ::selection{background:var(--gold);color:#fff;}
+    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+    a{text-decoration:none;color:inherit;}
+    button{font-family:var(--font-sans);cursor:pointer;}
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="css/variables.css"/>
-  <link rel="stylesheet" href="css/base.css"/>
-  <link rel="stylesheet" href="css/animations.css"/>
-  <link rel="stylesheet" href="css/nav.css"/>
-  <link rel="stylesheet" href="css/hero.css"/>
-  <link rel="stylesheet" href="css/menu.css"/>
-  <link rel="stylesheet" href="css/about.css"/>
-  <link rel="stylesheet" href="css/hours.css"/>
-  <link rel="stylesheet" href="css/basket.css"/>
-  <link rel="stylesheet" href="css/footer.css"/>
-  <link rel="stylesheet" href="css/admin.css"/>
+    /* â”€â”€ LOGIN â”€â”€ */
+    .login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;}
+    .login-box{width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+    .login-logo{width:90px;height:90px;border-radius:50%;object-fit:cover;background:#000;border:1px solid rgba(201,168,76,0.3);box-shadow:0 0 40px rgba(201,168,76,0.15);animation:logoIn .8s cubic-bezier(.34,1.56,.64,1) forwards;}
+    @keyframes logoIn{from{opacity:0;transform:scale(.7) rotate(-10deg);}to{opacity:1;transform:scale(1) rotate(0);}}
+    .login-title{font-family:var(--font-serif);font-size:2rem;font-weight:400;color:var(--text);text-align:center;}
+    .login-title span{color:var(--gold);font-style:italic;}
+    .login-sub{font-size:.8rem;color:var(--text-3);letter-spacing:.12em;text-transform:uppercase;text-align:center;}
+    .login-form{width:100%;display:flex;flex-direction:column;gap:10px;margin-top:.5rem;}
+    .login-input{width:100%;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:13px 16px;font-family:var(--font-sans);font-size:.9rem;color:var(--text);outline:none;transition:border-color .25s;}
+    .login-input::placeholder{color:var(--text-3);}
+    .login-input:focus{border-color:var(--gold);}
+    .login-btn{width:100%;background:var(--gold);color:#fff;border:none;padding:13px;border-radius:var(--radius);font-family:var(--font-sans);font-size:.9rem;font-weight:600;letter-spacing:.06em;margin-top:4px;transition:background .25s,transform .2s,box-shadow .25s;box-shadow:0 4px 20px rgba(201,168,76,.3);}
+    .login-btn:hover{background:var(--gold-dark);transform:translateY(-1px);box-shadow:0 8px 28px rgba(201,168,76,.4);}
+    .login-error{color:#e74c3c;font-size:.8rem;text-align:center;display:none;}
+    .back-link{font-size:.8rem;color:var(--text-3);margin-top:.5rem;transition:color .2s;}
+    .back-link:hover{color:var(--gold);}
+
+    /* â”€â”€ LAYOUT â”€â”€ */
+    .admin-layout{display:none;min-height:100vh;flex-direction:column;}
+    .admin-layout.visible{display:flex;}
+    .topbar{height:60px;background:var(--bg-2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;position:sticky;top:0;z-index:100;}
+    .topbar-left{display:flex;align-items:center;gap:12px;}
+    .topbar-logo{width:34px;height:34px;border-radius:50%;object-fit:cover;background:#000;}
+    .topbar-title{font-family:var(--font-serif);font-size:1.2rem;color:var(--gold);font-weight:500;}
+    .topbar-right{display:flex;align-items:center;gap:10px;}
+    .topbar-btn{background:var(--bg-3);border:1px solid var(--border);color:var(--text-2);padding:7px 16px;border-radius:50px;font-size:.78rem;font-weight:500;transition:background .2s,color .2s,border-color .2s;}
+    .topbar-btn:hover{border-color:var(--gold);color:var(--gold);}
+    .topbar-btn.danger{border-color:#e74c3c;color:#e74c3c;}
+    .topbar-btn.danger:hover{background:#e74c3c;color:#fff;}
+    .admin-body{display:flex;flex:1;}
+
+    /* â”€â”€ SIDEBAR â”€â”€ */
+    .sidebar{width:220px;background:var(--bg-2);border-right:1px solid var(--border);padding:1.5rem .85rem;display:flex;flex-direction:column;gap:4px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+    .sidebar-label{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);padding:0 10px;margin:1rem 0 .4rem;}
+    .sidebar-label:first-child{margin-top:0;}
+    .nav-btn{background:none;border:none;padding:10px 14px;border-radius:10px;font-family:var(--font-sans);font-size:.84rem;color:var(--text-2);display:flex;align-items:center;gap:10px;text-align:left;width:100%;transition:background .2s,color .2s;}
+    .nav-btn:hover{background:var(--bg-3);color:var(--text);}
+    .nav-btn.active{background:var(--gold);color:#fff;}
+    .nav-btn .icon{font-size:1rem;flex-shrink:0;}
+    .main{flex:1;padding:2rem;overflow-y:auto;}
+
+    /* â”€â”€ SECTIONS â”€â”€ */
+    .section{display:none;}
+    .section.visible{display:block;}
+    .section-title{font-family:var(--font-serif);font-size:1.8rem;font-weight:400;color:var(--text);margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+
+    /* â”€â”€ CARDS â”€â”€ */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;}
+    .card-title{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+
+    /* â”€â”€ FORM â”€â”€ */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+    .form-group{display:flex;flex-direction:column;gap:6px;}
+    .form-group label{font-size:.7rem;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;}
+    .form-input,.form-select{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:10px 13px;font-family:var(--font-sans);font-size:.86rem;color:var(--text);outline:none;transition:border-color .25s;width:100%;}
+    .form-input::placeholder{color:var(--text-3);}
+    .form-input:focus,.form-select:focus{border-color:var(--gold);}
+    .form-select{cursor:pointer;}
+
+    /* â”€â”€ BUTTONS â”€â”€ */
+    .btn{background:var(--gold);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-family:var(--font-sans);font-size:.84rem;font-weight:600;transition:background .2s,transform .15s;}
+    .btn:hover{background:var(--gold-dark);transform:translateY(-1px);}
+    .btn.danger{background:#e74c3c;}
+    .btn.danger:hover{background:#c0392b;}
+    .btn.sm{padding:7px 14px;font-size:.78rem;}
+    .btn.outline{background:transparent;border:1px solid var(--border);color:var(--text-2);}
+    .btn.outline:hover{border-color:var(--gold);color:var(--gold);}
+
+    /* â”€â”€ LIST â”€â”€ */
+    .list{display:flex;flex-direction:column;gap:8px;}
+    .list-item{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;transition:border-color .2s;}
+    .list-item:hover{border-color:rgba(201,168,76,.3);}
+    .list-item-name{font-weight:600;color:var(--text);font-size:.9rem;margin-bottom:3px;}
+    .list-item-meta{font-size:.75rem;color:var(--text-3);}
+    .list-item-actions{display:flex;gap:8px;flex-shrink:0;}
+    .tag{background:var(--bg-3);color:var(--gold);border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.72rem;}
+
+    /* â”€â”€ IMAGE UPLOAD â”€â”€ */
+    .img-upload-box{width:100%;height:180px;border:2px dashed var(--border);border-radius:var(--radius);cursor:pointer;overflow:hidden;transition:border-color .25s,background .25s;position:relative;}
+    .img-upload-box:hover{border-color:var(--gold);background:rgba(201,168,76,.04);}
+    .img-upload-preview{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+    .img-upload-preview img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+    .img-upload-icon{font-size:2rem;opacity:.4;}
+    .img-upload-text{font-size:.8rem;color:var(--text-3);letter-spacing:.06em;}
+    .item-thumb{width:48px;height:48px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;}
+    .no-thumb{width:48px;height:48px;border-radius:8px;background:var(--bg-3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;opacity:.5;}
+
+    /* â”€â”€ HOURS â”€â”€ */
+    .hour-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--border);}
+    .hour-row:last-child{border-bottom:none;}
+    .hour-day{width:100px;font-size:.86rem;font-weight:600;color:var(--text-2);flex-shrink:0;}
+    .hour-input{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:var(--font-sans);font-size:.84rem;color:var(--text);outline:none;width:110px;transition:border-color .25s;}
+    .hour-input:focus{border-color:var(--gold);}
+    .hour-sep{font-size:.8rem;color:var(--text-3);}
+    .closed-label{display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--text-3);cursor:pointer;}
+
+    /* â”€â”€ STATS â”€â”€ */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;transition:border-color .2s,transform .2s;}
+    .stat-card:hover{border-color:rgba(201,168,76,.4);transform:translateY(-2px);}
+    .stat-label{font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:.5rem;}
+    .stat-value{font-family:var(--font-serif);font-size:2rem;font-weight:400;color:var(--gold);line-height:1;}
+    .stat-sub{font-size:.75rem;color:var(--text-3);margin-top:4px;}
+
+    /* â”€â”€ TOAST â”€â”€ */
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(10px);background:var(--text);color:var(--bg);padding:10px 22px;border-radius:50px;font-size:.82rem;font-weight:500;z-index:9999;opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .26s,transform .26s;}
+    .toast.visible{opacity:1;transform:translateX(-50%) translateY(0);}
+
+    /* â”€â”€ EMPTY â”€â”€ */
+    .empty{text-align:center;padding:3rem;color:var(--text-3);font-size:.88rem;line-height:1.8;}
+    .empty-icon{font-size:2.5rem;margin-bottom:.8rem;opacity:.4;}
+
+    /* â”€â”€ RESPONSIVE â”€â”€ */
+    @media(max-width:768px){
+      .admin-body{flex-direction:column;}
+      .sidebar{width:100%;height:auto;flex-direction:row;overflow-x:auto;padding:.6rem;position:static;}
+      .sidebar-label{display:none;}
+      .nav-btn{white-space:nowrap;}
+      .form-grid{grid-template-columns:1fr;}
+      .main{padding:1.25rem;}
+    }
+  </style>
 </head>
-<body data-theme="dark">
+<body>
 
-<!-- ══ MOBILE MENU ══ -->
-<div class="mobile-menu" id="mobile-menu">
-  <button onclick="Nav.scrollTo('home')">Home</button>
-  <button onclick="Nav.scrollTo('menu')">Menu</button>
-  <button onclick="Basket.open()">Basket</button>
-  <button onclick="Nav.scrollTo('about')">About Us</button>
+<!-- â•â• LOGIN â•â• -->
+<div class="login-page" id="loginPage">
+  <div class="login-box">
+    <img class="login-logo" src="../assets/images/logo.png" alt="Elite Coffee"/>
+    <h1 class="login-title">Elite <span>Coffee</span></h1>
+    <p class="login-sub">Admin Panel Â· Bakhoun</p>
+    <div class="login-form">
+      <input class="login-input" id="loginUser" placeholder="Username" type="text"/>
+      <input class="login-input" id="loginPass" placeholder="Password" type="password"/>
+      <button class="login-btn" onclick="doLogin()">Login â†’</button>
+      <p class="login-error" id="loginErr">Wrong credentials. Try again.</p>
+    </div>
+    <a href="../index.html" class="back-link">â† Back to website</a>
+  </div>
 </div>
 
-<!-- ══ NAV ══ -->
-<nav id="main-nav">
-  <div class="nav-logo" onclick="Nav.scrollTo('home')">
-    <img src="assets/images/logo.png" alt="Elite Coffee"/>
-    <div class="nav-logo-name">Elite <span>Coffee</span></div>
-  </div>
-  <div class="nav-center">
-    <button class="nav-link active" data-section="home"  onclick="Nav.scrollTo('home')">Home</button>
-    <button class="nav-link"        data-section="menu"  onclick="Nav.scrollTo('menu')">Menu</button>
-    <button class="nav-link"        data-section="about" onclick="Nav.scrollTo('about')">About Us</button>
-  </div>
-  <div class="nav-right">
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-      <span class="toggle-icon sun">☀️</span>
-      <span class="toggle-icon moon">🌙</span>
-    </button>
-    <button class="basket-btn" id="basket-btn">
-      🛍 Basket <span class="basket-count" id="basket-count">0</span>
-    </button>
-    <button class="hamburger" id="hamburger" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
-
-<!-- ══ HERO ══ -->
-<section class="hero" id="home">
-  <div class="hero-orb hero-orb-1"></div>
-  <div class="hero-orb hero-orb-2"></div>
-  <div class="hero-rings">
-    <div class="hero-ring"></div>
-    <div class="hero-ring"></div>
-    <div class="hero-ring"></div>
-    <div class="hero-ring"></div>
-  </div>
-  <img class="hero-logo" src="assets/images/logo.png" alt="Elite Coffee"/>
-  <p class="hero-eyebrow">Est. 2026 · Bakhoun Highway · Lebanon</p>
-  <h1 class="hero-title">Elite<br/><em>Coffee</em></h1>
-  <p class="hero-subtitle">Crepes, pasta, saj & specialty coffee — crafted fresh, served with soul, right on the Bakhoun Highway.</p>
-  <div class="hero-cta">
-    <button class="btn-primary" onclick="Nav.scrollTo('menu')">📋 View Menu</button>
-    <button class="btn-outline" onclick="Nav.scrollTo('about')">Our Story</button>
-  </div>
-  <div class="hero-scroll">
-    <div class="hero-scroll-bar"></div>
-    <span>Scroll</span>
-  </div>
-</section>
-
-<!-- ══ MENU ══ -->
-<section class="section menu-section" id="menu">
-  <div class="section-inner">
-    <div class="reveal">
-      <p class="section-label">What we serve</p>
-      <h2 class="section-title">Our Menu</h2>
-      <p class="section-desc">Everything made fresh daily. Add a note to any item and order straight to WhatsApp.</p>
+<!-- â•â• ADMIN LAYOUT â•â• -->
+<div class="admin-layout" id="adminLayout">
+  <div class="topbar">
+    <div class="topbar-left">
+      <img class="topbar-logo" src="../assets/images/logo.png" alt="Elite Coffee"/>
+      <span class="topbar-title">Elite Coffee â€” Admin</span>
     </div>
-    <div class="category-row" id="category-row"></div>
-    <div class="menu-grid"    id="menu-grid"></div>
+    <div class="topbar-right">
+      <a href="../index.html" class="topbar-btn">â† View Site</a>
+      <button class="topbar-btn danger" onclick="logout()">Logout</button>
+    </div>
   </div>
-</section>
+  <div class="admin-body">
+    <div class="sidebar">
+      <div class="sidebar-label">Overview</div>
+      <button class="nav-btn active" onclick="goTo('dashboard',this)"><span class="icon">ðŸ“Š</span> Dashboard</button>
+      <div class="sidebar-label">Menu</div>
+      <button class="nav-btn" onclick="goTo('categories',this)"><span class="icon">ðŸ—‚</span> Categories</button>
+      <button class="nav-btn" onclick="goTo('items',this)"><span class="icon">ðŸ½</span> Menu Items</button>
+      <div class="sidebar-label">Settings</div>
+      <button class="nav-btn" onclick="goTo('hours',this)"><span class="icon">â°</span> Hours</button>
+      <button class="nav-btn" onclick="goTo('settings',this)"><span class="icon">âš™ï¸</span> Settings</button>
+    </div>
+    <div class="main">
 
-<!-- ══ ABOUT ══ -->
-<section class="section about-section" id="about">
-  <div class="section-inner">
-    <div class="about-grid">
-      <div class="about-body reveal-left">
-        <p class="section-label">Our story</p>
-        <h2 class="section-title">More than a café.<br/><em style="font-family:var(--font-serif);font-style:italic;color:var(--gold);">A feeling.</em></h2>
-        <p style="margin-top:1.1rem;">
-          Born in 2026 on the Bakhoun Highway, Elite Coffee is where refined taste
-          meets Lebanese warmth. Every dish is crafted with care, every cup is brewed
-          to perfection — because here, quality is not an option, it's our standard.
-          Whether you're stopping by for a quick espresso or sitting down for pasta,
-          you're always our guest.
-        </p>
-        <div class="info-rows">
-          <div class="info-row reveal" style="transition-delay:.04s">
-            <div class="info-icon">📍</div>
-            <div>
-              <div class="info-label">Location</div>
-              <div class="info-value">
-                Bakhoun Highway, North Lebanon<br/>
-                <a href="https://maps.app.goo.gl/3SbwW4mPs3c5uhKL9" target="_blank"
-                   style="color:var(--gold);font-size:.82rem;">Open in Google Maps →</a>
-              </div>
-            </div>
-          </div>
-          <div class="info-row reveal" style="transition-delay:.1s">
-            <div class="info-icon">📞</div>
-            <div>
-              <div class="info-label">Phone</div>
-              <div class="info-value">
-                <a href="tel:+96170270607">+961 70 270 607</a>
-              </div>
-            </div>
-          </div>
-          <div class="info-row reveal" style="transition-delay:.16s">
-            <div class="info-icon">⏰</div>
-            <div>
-              <div class="info-label">Opening Hours</div>
-              <div class="info-value" id="about-hours">See schedule below ↓</div>
-            </div>
-          </div>
-          <div class="info-row reveal" style="transition-delay:.22s">
-            <div class="info-icon">🛍</div>
-            <div>
-              <div class="info-label">Order Online</div>
-              <div class="info-value">
-                Browse, pick your items, add notes & send your order via WhatsApp.
-              </div>
-            </div>
-          </div>
+      <!-- DASHBOARD -->
+      <div class="section visible" id="sec-dashboard">
+        <h2 class="section-title">Dashboard</h2>
+        <div class="stats-grid" id="statsGrid"></div>
+        <div class="card">
+          <div class="card-title">Recent Items</div>
+          <div class="list" id="recentItems"></div>
         </div>
       </div>
-      <div class="reveal-right">
-        <div class="about-visual">
-          <div class="about-logo-ring">
-            <img src="assets/images/logo.png" alt="Elite Coffee"/>
-          </div>
-          <div class="about-badge">
-            <div class="about-badge-icon">☕</div>
-            <div>
-              <strong>Est. 2026</strong>
-              <span>Bakhoun, Lebanon</span>
+
+      <!-- CATEGORIES -->
+      <div class="section" id="sec-categories">
+        <h2 class="section-title">Categories</h2>
+        <div class="card">
+          <div class="card-title">Add New Category</div>
+          <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+            <div class="form-group" style="flex:1;min-width:160px;">
+              <label>Category Name</label>
+              <input class="form-input" id="catName" placeholder="e.g. Crepes"/>
             </div>
+            <div class="form-group">
+              <label>Icon (emoji)</label>
+              <input class="form-input" id="catIcon" placeholder="ðŸ¥ž" style="width:70px;"/>
+            </div>
+            <button class="btn" onclick="addCat()" style="margin-bottom:1px;">Add Category</button>
           </div>
         </div>
+        <div class="list" id="catList"></div>
       </div>
+
+      <!-- ITEMS -->
+      <div class="section" id="sec-items">
+        <h2 class="section-title">Menu Items</h2>
+        <div class="card">
+          <div class="card-title">Add New Item</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Item Name</label>
+              <input class="form-input" id="itemName" placeholder="e.g. Nutella Crepe"/>
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <select class="form-select" id="itemCat"></select>
+            </div>
+            <div class="form-group">
+              <label>Price (USD $)</label>
+              <input class="form-input" id="itemPrice" type="number" min="0" step="0.25" placeholder="5.00"/>
+            </div>
+            <div class="form-group">
+              <label>Description (optional)</label>
+              <input class="form-input" id="itemDesc" placeholder="Short description..."/>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:.75rem;">
+            <label>Item Photo (optional)</label>
+            <div class="img-upload-box" id="imgUploadBox" onclick="document.getElementById('itemImg').click()">
+              <div class="img-upload-preview" id="imgPreview">
+                <span class="img-upload-icon">ðŸ“·</span>
+                <span class="img-upload-text">Click to upload photo</span>
+              </div>
+            </div>
+            <input type="file" id="itemImg" accept="image/*" style="display:none" onchange="previewImage(this)"/>
+          </div>
+          <button class="btn" onclick="addItem()" style="margin-top:1rem;">Add Item</button>
+        </div>
+        <div class="list" id="itemList"></div>
+      </div>
+
+      <!-- HOURS -->
+      <div class="section" id="sec-hours">
+        <h2 class="section-title">Opening Hours</h2>
+        <div class="card">
+          <div class="card-title">Weekly Schedule</div>
+          <div id="hoursForm"></div>
+          <button class="btn" onclick="saveHours()" style="margin-top:1.2rem;">Save Hours âœ“</button>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="section" id="sec-settings">
+        <h2 class="section-title">Settings</h2>
+        <div class="card">
+          <div class="card-title">Currency Rate</div>
+          <div class="form-group" style="max-width:220px;">
+            <label>1 USD = ? LBP</label>
+            <input class="form-input" id="rateInput" type="number" value="90000"/>
+          </div>
+          <button class="btn" onclick="saveRate()" style="margin-top:1rem;">Save Rate</button>
+        </div>
+        <div class="card">
+          <div class="card-title">WhatsApp Number</div>
+          <div class="form-group" style="max-width:260px;">
+            <label>Number (without + sign)</label>
+            <input class="form-input" id="waInput" value="96170270607"/>
+          </div>
+          <button class="btn" onclick="saveWA()" style="margin-top:1rem;">Save Number</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Danger Zone</div>
+          <p style="font-size:.84rem;color:var(--text-3);margin-bottom:1rem;">This will delete ALL menu items and categories. This cannot be undone.</p>
+          <button class="btn danger" onclick="clearAll()">Reset All Data</button>
+        </div>
+      </div>
+
     </div>
   </div>
-</section>
+</div>
 
-<!-- ══ HOURS ══ -->
-<section class="section hours-section" id="hours">
-  <div class="section-inner">
-    <div class="reveal">
-      <p class="section-label">When to visit</p>
-      <h2 class="section-title">Opening Hours</h2>
-    </div>
-    <div class="hours-grid" id="hours-grid"></div>
-  </div>
-</section>
-
-<!-- ══ FOOTER ══ -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="footer-logo">Elite Coffee</div>
-        <p>Coffee · Crepes · Pasta · Saj<br/>Bakhoun Highway · Est. 2026</p>
-      </div>
-      <div class="footer-col">
-        <h5>Navigate</h5>
-        <button onclick="Nav.scrollTo('home')">Home</button>
-        <button onclick="Nav.scrollTo('menu')">Menu</button>
-        <button onclick="Nav.scrollTo('about')">About Us</button>
-        <button onclick="Basket.open()">Basket</button>
-      </div>
-      <div class="footer-col">
-        <h5>Contact</h5>
-        <a href="tel:+96170270607">+961 70 270 607</a>
-        <a href="https://maps.app.goo.gl/3SbwW4mPs3c5uhKL9" target="_blank">Bakhoun Highway</a>
-        <a href="https://wa.me/96170270607" target="_blank">WhatsApp Us</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 Elite Coffee · All rights reserved</span>
-      <a href="admin/index.html" class="footer-admin" id="footer-admin-btn">⚙ Admin</a>
-    </div>
-  </div>
-</footer>
-
-<!-- ══ WHATSAPP FLOAT ══ -->
-<a class="wa-float" href="https://wa.me/96170270607" target="_blank" aria-label="WhatsApp">
-  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</a>
-
-<!-- ══ TOAST ══ -->
 <div class="toast" id="toast"></div>
 
-<!-- ══ BASKET ══ -->
-<div class="basket-overlay" id="basket-overlay"></div>
-<div class="basket-drawer"  id="basket-drawer">
-  <div class="basket-header">
-    <h3>Your <em>Basket</em></h3>
-    <button class="close-drawer" id="close-basket">✕</button>
-  </div>
-  <div class="basket-items" id="basket-items"></div>
-  <div class="customer-form" id="customer-form" style="display:none">
-    <div class="customer-form-label">Your Details</div>
-    <input class="customer-input" id="customer-name"  placeholder="Full name"    type="text"/>
-    <input class="customer-input" id="customer-phone" placeholder="Phone number" type="tel"/>
-  </div>
-  <div class="basket-footer" id="basket-footer" style="display:none">
-    <div class="basket-total">
-      <span class="total-label">Total</span>
-      <div>
-        <div class="total-usd" id="total-usd">$0.00</div>
-        <div class="total-lbp" id="total-lbp">0 LBP</div>
-      </div>
-    </div>
-    <button class="whatsapp-order-btn" id="whatsapp-order-btn">
-      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Order via WhatsApp
-    </button>
-  </div>
-</div>
-
-<!-- ══ ADMIN ══ -->
-<div id="admin-overlay">
-  <div class="admin-login" id="admin-login-view">
-    <img class="admin-login-logo" src="assets/images/logo.png" alt="Elite Coffee"/>
-    <h2>Admin Panel</h2>
-    <p>Elite Coffee · Bakhoun</p>
-    <div style="display:flex;flex-direction:column;gap:8px;width:100%;max-width:300px;margin-top:.5rem;">
-      <input class="login-input" id="admin-user" placeholder="Username" type="text"/>
-      <input class="login-input" id="admin-pass" placeholder="Password" type="password"/>
-      <button class="admin-btn" id="admin-login-btn"
-        style="padding:11px;border-radius:10px;font-size:.88rem;margin-top:3px;">
-        Login →
-      </button>
-      <p class="admin-error" id="admin-error">Wrong credentials.</p>
-    </div>
-    <button id="admin-back-btn"
-      style="background:none;border:none;cursor:pointer;color:var(--text-3);
-             font-size:.8rem;margin-top:1rem;font-family:var(--font-sans);">
-      ← Back to site
-    </button>
-  </div>
-  <div class="admin-panel" id="admin-panel">
-    <div class="admin-topbar">
-      <h2>☕ Elite Coffee — Admin</h2>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <button class="theme-toggle theme-toggle-alt" aria-label="Toggle theme">
-          <span class="toggle-icon sun">☀️</span>
-          <span class="toggle-icon moon">🌙</span>
-        </button>
-        <button class="admin-btn" id="admin-close-btn" style="padding:7px 16px;">← Exit</button>
-      </div>
-    </div>
-    <div class="admin-body">
-      <div class="admin-sidebar">
-        <button class="admin-nav-btn active" onclick="Admin.navTo('categories', this)">🗂 Categories</button>
-        <button class="admin-nav-btn"        onclick="Admin.navTo('items', this)">🍽 Items</button>
-        <button class="admin-nav-btn"        onclick="Admin.navTo('hours', this)">⏰ Hours</button>
-        <button class="admin-nav-btn"        onclick="Admin.navTo('settings', this)">⚙️ Settings</button>
-      </div>
-      <div class="admin-main">
-
-        <!-- CATEGORIES -->
-        <div class="admin-section visible" id="admin-categories">
-          <h3>Categories</h3>
-          <div class="admin-card">
-            <h4>Add Category</h4>
-            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
-              <div class="admin-group" style="flex:1;min-width:150px;">
-                <label>Name</label>
-                <input class="admin-input" id="cat-name" placeholder="e.g. Crepes"/>
-              </div>
-              <div class="admin-group">
-                <label>Icon</label>
-                <input class="admin-input" id="cat-icon" placeholder="🥞" style="width:65px;"/>
-              </div>
-              <button class="admin-btn" onclick="Admin.addCat()">Add</button>
-            </div>
-          </div>
-          <div class="admin-list" id="admin-cat-list"></div>
-        </div>
-
-        <!-- ITEMS -->
-        <div class="admin-section" id="admin-items">
-          <h3>Menu Items</h3>
-          <div class="admin-card">
-            <h4>Add Item</h4>
-            <div class="admin-row">
-              <div class="admin-group">
-                <label>Name</label>
-                <input class="admin-input" id="item-name" placeholder="e.g. Nutella Crepe"/>
-              </div>
-              <div class="admin-group">
-                <label>Category</label>
-                <select class="admin-select" id="item-cat"></select>
-              </div>
-            </div>
-            <div class="admin-row">
-              <div class="admin-group">
-                <label>Price (USD $)</label>
-                <input class="admin-input" id="item-price" type="number" min="0" step="0.25" placeholder="5.00"/>
-              </div>
-              <div class="admin-group">
-                <label>Description</label>
-                <input class="admin-input" id="item-desc" placeholder="Optional short desc"/>
-              </div>
-            </div>
-            <button class="admin-btn" onclick="Admin.addItem()">Add Item</button>
-          </div>
-          <div class="admin-list" id="admin-item-list"></div>
-        </div>
-
-        <!-- HOURS -->
-        <div class="admin-section" id="admin-hours">
-          <h3>Opening Hours</h3>
-          <div class="admin-card">
-            <h4>Daily Schedule</h4>
-            <div id="hours-form" style="display:flex;flex-direction:column;gap:10px;"></div>
-            <button class="admin-btn" onclick="Admin.saveHours()" style="margin-top:1.1rem;">Save Hours ✓</button>
-          </div>
-        </div>
-
-        <!-- SETTINGS -->
-        <div class="admin-section" id="admin-settings">
-          <h3>Settings</h3>
-          <div class="admin-card">
-            <h4>Currency Rate</h4>
-            <div class="admin-group">
-              <label>1 USD = ? LBP</label>
-              <input class="admin-input" id="rate-input" type="number" value="90000" style="max-width:180px;"/>
-            </div>
-            <button class="admin-btn" onclick="Admin.saveRate()" style="margin-top:.9rem;">Save</button>
-          </div>
-          <div class="admin-card">
-            <h4>WhatsApp Number</h4>
-            <div class="admin-group">
-              <label>Number (without + sign)</label>
-              <input class="admin-input" id="wa-input" value="96170270607" style="max-width:220px;"/>
-            </div>
-            <button class="admin-btn" onclick="Admin.saveWA()" style="margin-top:.9rem;">Save</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ JS MODULES ══ -->
-<script src="js/data.js"></script>
-<script src="js/theme.js"></script>
-<script src="js/animations.js"></script>
-<script src="js/hours.js"></script>
-<script src="js/menu.js"></script>
-<script src="js/basket.js"></script>
-<script src="js/order.js"></script>
-<script src="js/nav.js"></script>
-<script src="js/admin.js"></script>
-
-<!-- ══ INIT ══ -->
 <script>
-  Theme.init();
-  Animations.init();
-  Menu.init();
-  Hours.render();
-  Basket.init();
-  Nav.init();
-  Admin.init();
-</script>
+const K = { rate:'ec_rate', menu:'ec_menu', cats:'ec_cats', hours:'ec_hours', wa:'ec_wa' };
 
+const DEFAULT_CATS = [
+  { id:'crepes', name:'Crepes', icon:'ðŸ¥ž' },
+  { id:'pasta',  name:'Pasta',  icon:'ðŸ' },
+  { id:'coffee', name:'Coffee', icon:'â˜•' },
+  { id:'saj',    name:'Saj',    icon:'ðŸ«“' },
+];
+
+const DEFAULT_HOURS = [
+  { day:'Monday',    open:'08:00', close:'22:00', closed:false },
+  { day:'Tuesday',   open:'08:00', close:'22:00', closed:false },
+  { day:'Wednesday', open:'08:00', close:'22:00', closed:false },
+  { day:'Thursday',  open:'08:00', close:'22:00', closed:false },
+  { day:'Friday',    open:'08:00', close:'23:00', closed:false },
+  { day:'Saturday',  open:'09:00', close:'23:00', closed:false },
+  { day:'Sunday',    open:'09:00', close:'22:00', closed:false },
+];
+
+const Data = {
+  get rate()  { return parseInt(localStorage.getItem(K.rate))   || 90000; },
+  get waNum() { return localStorage.getItem(K.wa)               || '96170270607'; },
+  get cats()  { return JSON.parse(localStorage.getItem(K.cats))  || DEFAULT_CATS; },
+  get items() { return JSON.parse(localStorage.getItem(K.menu))  || []; },
+  get hours() { return JSON.parse(localStorage.getItem(K.hours)) || DEFAULT_HOURS; },
+  set rate(v)  { localStorage.setItem(K.rate,  v); },
+  set waNum(v) { localStorage.setItem(K.wa,    v); },
+  set cats(v)  { localStorage.setItem(K.cats,  JSON.stringify(v)); },
+  set items(v) { localStorage.setItem(K.menu,  JSON.stringify(v)); },
+  set hours(v) { localStorage.setItem(K.hours, JSON.stringify(v)); },
+  saveImage(id, b64) { localStorage.setItem('ec_img_' + id, b64); },
+  getImage(id)       { return localStorage.getItem('ec_img_' + id) || null; },
+  deleteImage(id)    { localStorage.removeItem('ec_img_' + id); },
+};
+
+/* â”€â”€ AUTH â”€â”€ */
+function doLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const err  = document.getElementById('loginErr');
+  if (user === 'zakhouri' && pass === 'zakhourielite') {
+    sessionStorage.setItem('ec_admin','1');
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('adminLayout').classList.add('visible');
+    err.style.display = 'none';
+    initAdmin();
+  } else {
+    err.style.display = 'block';
+    document.getElementById('loginPass').value = '';
+    err.animate(
+      [{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(0)'}],
+      {duration:260, iterations:3}
+    );
+  }
+}
+document.getElementById('loginPass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+function logout() {
+  sessionStorage.removeItem('ec_admin');
+  document.getElementById('adminLayout').classList.remove('visible');
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+/* â”€â”€ NAV â”€â”€ */
+function goTo(sec, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + sec).classList.add('visible');
+  btn.classList.add('active');
+  if (sec === 'dashboard')  renderDashboard();
+  if (sec === 'categories') renderCats();
+  if (sec === 'items')      renderItems();
+  if (sec === 'hours')      renderHoursForm();
+  if (sec === 'settings')   {
+    document.getElementById('rateInput').value = Data.rate;
+    document.getElementById('waInput').value   = Data.waNum;
+  }
+}
+
+/* â”€â”€ INIT â”€â”€ */
+function initAdmin() {
+  renderDashboard();
+  renderCats();
+  renderItems();
+  renderHoursForm();
+  document.getElementById('rateInput').value = Data.rate;
+  document.getElementById('waInput').value   = Data.waNum;
+}
+if (sessionStorage.getItem('ec_admin')) {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('adminLayout').classList.add('visible');
+  initAdmin();
+}
+
+/* â”€â”€ DASHBOARD â”€â”€ */
+function renderDashboard() {
+  const cats = Data.cats, items = Data.items;
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Categories</div><div class="stat-value">${cats.length}</div><div class="stat-sub">Active categories</div></div>
+    <div class="stat-card"><div class="stat-label">Menu Items</div><div class="stat-value">${items.length}</div><div class="stat-sub">Total items</div></div>
+    <div class="stat-card"><div class="stat-label">Currency Rate</div><div class="stat-value">${(Data.rate/1000).toFixed(0)}K</div><div class="stat-sub">LBP per USD</div></div>
+    <div class="stat-card"><div class="stat-label">WhatsApp</div><div class="stat-value" style="font-size:1rem;margin-top:.4rem;">+${Data.waNum}</div><div class="stat-sub">Order number</div></div>`;
+  const recent = [...items].reverse().slice(0, 5);
+  document.getElementById('recentItems').innerHTML = recent.length
+    ? recent.map(it => {
+        const cat = cats.find(c => c.id === it.catId);
+        const img = Data.getImage(it.id);
+        return `<div class="list-item">
+          ${img ? `<img class="item-thumb" src="${img}" alt="${it.name}"/>` : `<div class="no-thumb">ðŸ½</div>`}
+          <div style="flex:1;min-width:0;">
+            <div class="list-item-name">${it.name}</div>
+            <div class="list-item-meta">${cat ? cat.icon+' '+cat.name : 'â€”'} Â· $${it.price.toFixed(2)}</div>
+          </div>
+          <span class="tag">$${it.price.toFixed(2)}</span>
+        </div>`;
+      }).join('')
+    : '<div class="empty"><div class="empty-icon">ðŸ½</div><p>No items yet.</p></div>';
+}
+
+/* â”€â”€ CATEGORIES â”€â”€ */
+function addCat() {
+  const name = document.getElementById('catName').value.trim();
+  const icon = document.getElementById('catIcon').value.trim() || 'ðŸ´';
+  if (!name) return toast('Enter a category name');
+  const cats = Data.cats;
+  cats.push({ id: name.toLowerCase().replace(/\s+/g,'-')+'-'+Date.now(), name, icon });
+  Data.cats = cats;
+  document.getElementById('catName').value = '';
+  document.getElementById('catIcon').value = '';
+  renderCats();
+  toast('Category added âœ“');
+}
+function delCat(id) {
+  if (!confirm('Delete this category?')) return;
+  Data.cats = Data.cats.filter(c => c.id !== id);
+  renderCats();
+  toast('Category deleted');
+}
+function renderCats() {
+  const list = document.getElementById('catList');
+  const cats = Data.cats;
+  list.innerHTML = cats.length
+    ? cats.map(c => `
+        <div class="list-item">
+          <div><div class="list-item-name">${c.icon} ${c.name}</div><div class="list-item-meta">ID: ${c.id}</div></div>
+          <button class="btn sm danger" onclick="delCat('${c.id}')">Delete</button>
+        </div>`).join('')
+    : '<div class="empty"><div class="empty-icon">ðŸ—‚</div><p>No categories yet.</p></div>';
+}
+
+/* â”€â”€ IMAGE PREVIEW â”€â”€ */
+let currentImageB64 = null;
+function previewImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    currentImageB64 = e.target.result;
+    const preview = document.getElementById('imgPreview');
+    preview.innerHTML = `<img src="${currentImageB64}" alt="preview"/>`;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* â”€â”€ ITEMS â”€â”€ */
+function addItem() {
+  const name  = document.getElementById('itemName').value.trim();
+  const catId = document.getElementById('itemCat').value;
+  const price = parseFloat(document.getElementById('itemPrice').value);
+  const desc  = document.getElementById('itemDesc').value.trim();
+  if (!name)                      return toast('Enter an item name');
+  if (!catId)                     return toast('Select a category');
+  if (isNaN(price) || price < 0)  return toast('Enter a valid price');
+  const id = Date.now();
+  const items = Data.items;
+  items.push({ id, name, catId, price, desc });
+  Data.items = items;
+  if (currentImageB64) {
+    Data.saveImage(id, currentImageB64);
+    currentImageB64 = null;
+  }
+  document.getElementById('itemName').value  = '';
+  document.getElementById('itemPrice').value = '';
+  document.getElementById('itemDesc').value  = '';
+  document.getElementById('imgPreview').innerHTML = '<span class="img-upload-icon">ðŸ“·</span><span class="img-upload-text">Click to upload photo</span>';
+  document.getElementById('itemImg').value = '';
+  renderItems();
+  toast('Item added âœ“');
+}
+function delItem(id) {
+  Data.items = Data.items.filter(i => i.id !== id);
+  Data.deleteImage(id);
+  renderItems();
+  toast('Item removed');
+}
+function renderItems() {
+  const sel = document.getElementById('itemCat');
+  sel.innerHTML = Data.cats.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+  const list  = document.getElementById('itemList');
+  const items = Data.items;
+  list.innerHTML = items.length
+    ? items.map(it => {
+        const cat = Data.cats.find(c => c.id === it.catId);
+        const lbp = Math.round(it.price * Data.rate).toLocaleString();
+        const img = Data.getImage(it.id);
+        return `
+          <div class="list-item">
+            ${img ? `<img class="item-thumb" src="${img}" alt="${it.name}"/>` : `<div class="no-thumb">ðŸ½</div>`}
+            <div style="flex:1;min-width:0;">
+              <div class="list-item-name">${it.name}</div>
+              <div class="list-item-meta">${cat ? cat.icon+' '+cat.name : 'â€”'} Â· $${it.price.toFixed(2)} Â· ${lbp} LBP${it.desc ? ' Â· '+it.desc : ''}</div>
+            </div>
+            <div class="list-item-actions">
+              <span class="tag">$${it.price.toFixed(2)}</span>
+              <button class="btn sm danger" onclick="delItem(${it.id})">Delete</button>
+            </div>
+          </div>`;
+      }).join('')
+    : '<div class="empty"><div class="empty-icon">ðŸ½</div><p>No items yet. Add your first item above!</p></div>';
+}
+
+/* â”€â”€ HOURS â”€â”€ */
+function renderHoursForm() {
+  document.getElementById('hoursForm').innerHTML = Data.hours.map((h, i) => `
+    <div class="hour-row">
+      <span class="hour-day">${h.day}</span>
+      <input type="time" value="${h.open}"  id="ho-o-${i}" class="hour-input" ${h.closed ? 'disabled' : ''}/>
+      <span class="hour-sep">to</span>
+      <input type="time" value="${h.close}" id="ho-c-${i}" class="hour-input" ${h.closed ? 'disabled' : ''}/>
+      <label class="closed-label">
+        <input type="checkbox" id="ho-x-${i}" ${h.closed ? 'checked' : ''} onchange="toggleDay(${i})"/> Closed
+      </label>
+    </div>`).join('');
+}
+function toggleDay(i) {
+  const closed = document.getElementById(`ho-x-${i}`).checked;
+  document.getElementById(`ho-o-${i}`).disabled = closed;
+  document.getElementById(`ho-c-${i}`).disabled = closed;
+}
+function saveHours() {
+  Data.hours = Data.hours.map((h, i) => ({
+    ...h,
+    open:   document.getElementById(`ho-o-${i}`).value,
+    close:  document.getElementById(`ho-c-${i}`).value,
+    closed: document.getElementById(`ho-x-${i}`).checked,
+  }));
+  toast('Hours saved âœ“');
+}
+
+/* â”€â”€ SETTINGS â”€â”€ */
+function saveRate() { Data.rate = parseInt(document.getElementById('rateInput').value) || 90000; toast('Rate saved âœ“'); }
+function saveWA()   { Data.waNum = document.getElementById('waInput').value.trim(); toast('WhatsApp number saved âœ“'); }
+function clearAll() {
+  if (!confirm('Are you sure? This will delete ALL data!')) return;
+  if (!confirm('Last warning â€” this cannot be undone!')) return;
+  localStorage.removeItem('ec_menu');
+  localStorage.removeItem('ec_cats');
+  initAdmin();
+  toast('All data cleared');
+}
+
+/* â”€â”€ TOAST â”€â”€ */
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('visible');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('visible'), 2500);
+}
+</script>
 </body>
 </html>
+
