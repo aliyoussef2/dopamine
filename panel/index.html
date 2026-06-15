@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
   <style>
-    :root {
+    :root{
       --gold:#C9A84C;--gold-dark:#9A7630;
       --bg:#0C0A08;--bg-2:#131009;--bg-3:#1A1610;
       --text:#F0E8DC;--text-2:#B8A890;--text-3:#6E6050;
@@ -92,10 +92,10 @@
     .img-upload-box{width:100%;height:180px;border:2px dashed var(--border);border-radius:var(--radius);cursor:pointer;overflow:hidden;transition:border-color .25s;position:relative;display:flex;align-items:center;justify-content:center;}
     .img-upload-box:hover{border-color:var(--gold);}
     .img-upload-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
-    .img-upload-placeholder{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-3);font-size:.8rem;pointer-events:none;}
-    .img-upload-placeholder span:first-child{font-size:2rem;opacity:.4;}
+    .img-placeholder{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-3);font-size:.8rem;pointer-events:none;}
+    .img-placeholder span:first-child{font-size:2rem;opacity:.4;}
     .item-thumb{width:48px;height:48px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;}
-    .no-thumb{width:48px;height:48px;border-radius:8px;background:var(--bg-3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;opacity:.5;}
+    .no-thumb{width:48px;height:48px;border-radius:8px;background:var(--bg-3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.75rem;color:var(--text-3);}
 
     .hour-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--border);}
     .hour-row:last-child{border-bottom:none;}
@@ -134,7 +134,7 @@
   <div class="login-box">
     <img class="login-logo" src="../assets/images/logo.png" alt="Elite Coffee"/>
     <h1 class="login-title">Elite <span>Coffee</span></h1>
-    <p class="login-sub">Admin Panel</p>
+    <p class="login-sub">Admin Panel - Bakhoun</p>
     <div class="login-form">
       <input class="login-input" id="loginUser" placeholder="Username" type="text"/>
       <input class="login-input" id="loginPass" placeholder="Password" type="password"/>
@@ -149,7 +149,7 @@
   <div class="topbar">
     <div class="topbar-left">
       <img class="topbar-logo" src="../assets/images/logo.png" alt=""/>
-      <span class="topbar-title">Elite Coffee Admin</span>
+      <span class="topbar-title">Elite Coffee - Admin</span>
     </div>
     <div class="topbar-right">
       <a href="../index.html" class="topbar-btn">View Site</a>
@@ -222,7 +222,7 @@
           <div class="form-group" style="margin-top:.75rem;">
             <label>Photo (optional)</label>
             <div class="img-upload-box" id="imgBox" onclick="document.getElementById('itemImg').click()">
-              <div class="img-upload-placeholder" id="imgPlaceholder">
+              <div class="img-placeholder" id="imgPlaceholder">
                 <span>+</span>
                 <span>Click to upload photo</span>
               </div>
@@ -275,263 +275,190 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const K = { rate:'ec_rate', menu:'ec_menu', cats:'ec_cats', hours:'ec_hours', wa:'ec_wa' };
-const DEFAULT_CATS = [
-  { id:'crepes', name:'Crepes', icon:'Crepes' },
-  { id:'pasta',  name:'Pasta',  icon:'Pasta'  },
-  { id:'coffee', name:'Coffee', icon:'Coffee' },
-  { id:'saj',    name:'Saj',    icon:'Saj'    },
-];
-const DEFAULT_HOURS = [
-  { day:'Monday',    open:'08:00', close:'22:00', closed:false },
-  { day:'Tuesday',   open:'08:00', close:'22:00', closed:false },
-  { day:'Wednesday', open:'08:00', close:'22:00', closed:false },
-  { day:'Thursday',  open:'08:00', close:'22:00', closed:false },
-  { day:'Friday',    open:'08:00', close:'23:00', closed:false },
-  { day:'Saturday',  open:'09:00', close:'23:00', closed:false },
-  { day:'Sunday',    open:'09:00', close:'22:00', closed:false },
-];
-const Data = {
-  get rate()  { return parseInt(localStorage.getItem(K.rate))   || 90000; },
-  get waNum() { return localStorage.getItem(K.wa)               || '96170270607'; },
-  get cats()  { return JSON.parse(localStorage.getItem(K.cats))  || DEFAULT_CATS; },
-  get items() { return JSON.parse(localStorage.getItem(K.menu))  || []; },
-  get hours() { return JSON.parse(localStorage.getItem(K.hours)) || DEFAULT_HOURS; },
-  set rate(v)  { localStorage.setItem(K.rate,  v); },
-  set waNum(v) { localStorage.setItem(K.wa,    v); },
-  set cats(v)  { localStorage.setItem(K.cats,  JSON.stringify(v)); },
-  set items(v) { localStorage.setItem(K.menu,  JSON.stringify(v)); },
-  set hours(v) { localStorage.setItem(K.hours, JSON.stringify(v)); },
-  saveImage(id, b64) { localStorage.setItem('ec_img_' + id, b64); },
-  getImage(id)       { return localStorage.getItem('ec_img_' + id) || null; },
-  deleteImage(id)    { localStorage.removeItem('ec_img_' + id); },
+const K={rate:'ec_rate',menu:'ec_menu',cats:'ec_cats',hours:'ec_hours',wa:'ec_wa'};
+const DEFAULT_CATS=[{id:'crepes',name:'Crepes',icon:'Crepes'},{id:'pasta',name:'Pasta',icon:'Pasta'},{id:'coffee',name:'Coffee',icon:'Coffee'},{id:'saj',name:'Saj',icon:'Saj'}];
+const DEFAULT_HOURS=[{day:'Monday',open:'08:00',close:'22:00',closed:false},{day:'Tuesday',open:'08:00',close:'22:00',closed:false},{day:'Wednesday',open:'08:00',close:'22:00',closed:false},{day:'Thursday',open:'08:00',close:'22:00',closed:false},{day:'Friday',open:'08:00',close:'23:00',closed:false},{day:'Saturday',open:'09:00',close:'23:00',closed:false},{day:'Sunday',open:'09:00',close:'22:00',closed:false}];
+const Data={
+  get rate(){return parseInt(localStorage.getItem(K.rate))||90000;},
+  get waNum(){return localStorage.getItem(K.wa)||'96170270607';},
+  get cats(){return JSON.parse(localStorage.getItem(K.cats))||DEFAULT_CATS;},
+  get items(){return JSON.parse(localStorage.getItem(K.menu))||[];},
+  get hours(){return JSON.parse(localStorage.getItem(K.hours))||DEFAULT_HOURS;},
+  set rate(v){localStorage.setItem(K.rate,v);},
+  set waNum(v){localStorage.setItem(K.wa,v);},
+  set cats(v){localStorage.setItem(K.cats,JSON.stringify(v));},
+  set items(v){localStorage.setItem(K.menu,JSON.stringify(v));},
+  set hours(v){localStorage.setItem(K.hours,JSON.stringify(v));},
+  saveImage(id,b64){localStorage.setItem('ec_img_'+id,b64);},
+  getImage(id){return localStorage.getItem('ec_img_'+id)||null;},
+  deleteImage(id){localStorage.removeItem('ec_img_'+id);},
 };
 
-function doLogin() {
-  const user = document.getElementById('loginUser').value.trim();
-  const pass = document.getElementById('loginPass').value;
-  const err  = document.getElementById('loginErr');
-  if (user === 'zakhouri' && pass === 'zakhouri') {
+function doLogin(){
+  const user=document.getElementById('loginUser').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginErr');
+  if(user==='zakhouri'&&pass==='zakhouri'){
     sessionStorage.setItem('ec_admin','1');
-    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('loginPage').style.display='none';
     document.getElementById('adminLayout').classList.add('visible');
-    err.style.display = 'none';
+    err.style.display='none';
     initAdmin();
-  } else {
-    err.style.display = 'block';
-    document.getElementById('loginPass').value = '';
+  }else{
+    err.style.display='block';
+    document.getElementById('loginPass').value='';
   }
 }
-document.getElementById('loginPass').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
-});
-function logout() {
+document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+function logout(){
   sessionStorage.removeItem('ec_admin');
   document.getElementById('adminLayout').classList.remove('visible');
-  document.getElementById('loginPage').style.display = 'flex';
-  document.getElementById('loginUser').value = '';
-  document.getElementById('loginPass').value = '';
+  document.getElementById('loginPage').style.display='flex';
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
 }
 
-function goTo(sec, btn) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('sec-' + sec).classList.add('visible');
+function goTo(sec,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+sec).classList.add('visible');
   btn.classList.add('active');
-  if (sec === 'dashboard')  renderDashboard();
-  if (sec === 'categories') renderCats();
-  if (sec === 'items')      renderItems();
-  if (sec === 'hours')      renderHoursForm();
-  if (sec === 'settings') {
-    document.getElementById('rateInput').value = Data.rate;
-    document.getElementById('waInput').value   = Data.waNum;
-  }
+  if(sec==='dashboard')renderDashboard();
+  if(sec==='categories')renderCats();
+  if(sec==='items')renderItems();
+  if(sec==='hours')renderHoursForm();
+  if(sec==='settings'){document.getElementById('rateInput').value=Data.rate;document.getElementById('waInput').value=Data.waNum;}
 }
 
-function initAdmin() {
-  renderDashboard();
-  renderCats();
-  renderItems();
-  renderHoursForm();
-  document.getElementById('rateInput').value = Data.rate;
-  document.getElementById('waInput').value   = Data.waNum;
+function initAdmin(){
+  renderDashboard();renderCats();renderItems();renderHoursForm();
+  document.getElementById('rateInput').value=Data.rate;
+  document.getElementById('waInput').value=Data.waNum;
 }
-if (sessionStorage.getItem('ec_admin')) {
-  document.getElementById('loginPage').style.display = 'none';
+if(sessionStorage.getItem('ec_admin')){
+  document.getElementById('loginPage').style.display='none';
   document.getElementById('adminLayout').classList.add('visible');
   initAdmin();
 }
 
-function renderDashboard() {
-  const cats = Data.cats, items = Data.items;
-  document.getElementById('statsGrid').innerHTML = `
+function renderDashboard(){
+  const cats=Data.cats,items=Data.items;
+  document.getElementById('statsGrid').innerHTML=`
     <div class="stat-card"><div class="stat-label">Categories</div><div class="stat-value">${cats.length}</div><div class="stat-sub">Active</div></div>
     <div class="stat-card"><div class="stat-label">Menu Items</div><div class="stat-value">${items.length}</div><div class="stat-sub">Total</div></div>
     <div class="stat-card"><div class="stat-label">Rate</div><div class="stat-value">${(Data.rate/1000).toFixed(0)}K</div><div class="stat-sub">LBP per USD</div></div>
     <div class="stat-card"><div class="stat-label">WhatsApp</div><div class="stat-value" style="font-size:1rem;margin-top:.4rem;">+${Data.waNum}</div><div class="stat-sub">Order number</div></div>`;
-  const recent = [...items].reverse().slice(0, 5);
-  document.getElementById('recentItems').innerHTML = recent.length
-    ? recent.map(it => {
-        const cat = cats.find(c => c.id === it.catId);
-        const img = Data.getImage(it.id);
-        return `<div class="list-item">
-          ${img ? `<img class="item-thumb" src="${img}" alt=""/>` : `<div class="no-thumb">?</div>`}
-          <div style="flex:1;min-width:0;">
-            <div class="list-item-name">${it.name}</div>
-            <div class="list-item-meta">${cat ? cat.name : '-'} - $${it.price.toFixed(2)}</div>
-          </div>
-          <span class="tag">$${it.price.toFixed(2)}</span>
-        </div>`;
-      }).join('')
-    : '<div class="empty"><div class="empty-icon">?</div><p>No items yet.</p></div>';
+  const recent=[...items].reverse().slice(0,5);
+  document.getElementById('recentItems').innerHTML=recent.length
+    ?recent.map(it=>{const cat=cats.find(c=>c.id===it.catId);const img=Data.getImage(it.id);return`<div class="list-item">${img?`<img class="item-thumb" src="${img}" alt=""/>`:`<div class="no-thumb">img</div>`}<div style="flex:1;min-width:0;"><div class="list-item-name">${it.name}</div><div class="list-item-meta">${cat?cat.name:'-'} - $${it.price.toFixed(2)}</div></div><span class="tag">$${it.price.toFixed(2)}</span></div>`;}).join('')
+    :'<div class="empty"><p>No items yet.</p></div>';
 }
 
-function addCat() {
-  const name = document.getElementById('catName').value.trim();
-  const icon = document.getElementById('catIcon').value.trim() || name;
-  if (!name) return toast('Enter a category name');
-  const cats = Data.cats;
-  cats.push({ id: name.toLowerCase().replace(/\s+/g,'-')+'-'+Date.now(), name, icon });
-  Data.cats = cats;
-  document.getElementById('catName').value = '';
-  document.getElementById('catIcon').value = '';
-  renderCats();
-  toast('Category added');
+function addCat(){
+  const name=document.getElementById('catName').value.trim();
+  const icon=document.getElementById('catIcon').value.trim()||name;
+  if(!name)return toast('Enter a name');
+  const cats=Data.cats;
+  cats.push({id:name.toLowerCase().replace(/\s+/g,'-')+'-'+Date.now(),name,icon});
+  Data.cats=cats;
+  document.getElementById('catName').value='';
+  document.getElementById('catIcon').value='';
+  renderCats();toast('Category added');
 }
-function delCat(id) {
-  if (!confirm('Delete this category?')) return;
-  Data.cats = Data.cats.filter(c => c.id !== id);
-  renderCats();
-  toast('Deleted');
+function delCat(id){
+  if(!confirm('Delete?'))return;
+  Data.cats=Data.cats.filter(c=>c.id!==id);
+  renderCats();toast('Deleted');
 }
-function renderCats() {
-  const list = document.getElementById('catList');
-  const cats = Data.cats;
-  list.innerHTML = cats.length
-    ? cats.map(c => `
-        <div class="list-item">
-          <div><div class="list-item-name">${c.name}</div><div class="list-item-meta">${c.id}</div></div>
-          <button class="btn sm danger" onclick="delCat('${c.id}')">Delete</button>
-        </div>`).join('')
-    : '<div class="empty"><p>No categories yet.</p></div>';
+function renderCats(){
+  const list=document.getElementById('catList');
+  const cats=Data.cats;
+  list.innerHTML=cats.length
+    ?cats.map(c=>`<div class="list-item"><div><div class="list-item-name">${c.name}</div><div class="list-item-meta">${c.id}</div></div><button class="btn sm danger" onclick="delCat('${c.id}')">Delete</button></div>`).join('')
+    :'<div class="empty"><p>No categories yet.</p></div>';
 }
 
-let currentImg = null;
-function previewImg(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    currentImg = e.target.result;
-    const box = document.getElementById('imgBox');
-    let img = box.querySelector('img');
-    if (!img) { img = document.createElement('img'); box.appendChild(img); }
-    img.src = currentImg;
-    document.getElementById('imgPlaceholder').style.display = 'none';
+let currentImg=null;
+function previewImg(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    currentImg=e.target.result;
+    const box=document.getElementById('imgBox');
+    let img=box.querySelector('img');
+    if(!img){img=document.createElement('img');box.appendChild(img);}
+    img.src=currentImg;
+    document.getElementById('imgPlaceholder').style.display='none';
   };
   reader.readAsDataURL(file);
 }
 
-function addItem() {
-  const name  = document.getElementById('itemName').value.trim();
-  const catId = document.getElementById('itemCat').value;
-  const price = parseFloat(document.getElementById('itemPrice').value);
-  const desc  = document.getElementById('itemDesc').value.trim();
-  if (!name)                     return toast('Enter a name');
-  if (!catId)                    return toast('Select a category');
-  if (isNaN(price) || price < 0) return toast('Enter a valid price');
-  const id = Date.now();
-  const items = Data.items;
-  items.push({ id, name, catId, price, desc });
-  Data.items = items;
-  if (currentImg) { Data.saveImage(id, currentImg); currentImg = null; }
-  document.getElementById('itemName').value  = '';
-  document.getElementById('itemPrice').value = '';
-  document.getElementById('itemDesc').value  = '';
-  document.getElementById('itemImg').value   = '';
-  const box = document.getElementById('imgBox');
-  const img = box.querySelector('img');
-  if (img) img.remove();
-  document.getElementById('imgPlaceholder').style.display = 'flex';
-  renderItems();
-  toast('Item added');
+function addItem(){
+  const name=document.getElementById('itemName').value.trim();
+  const catId=document.getElementById('itemCat').value;
+  const price=parseFloat(document.getElementById('itemPrice').value);
+  const desc=document.getElementById('itemDesc').value.trim();
+  if(!name)return toast('Enter a name');
+  if(!catId)return toast('Select a category');
+  if(isNaN(price)||price<0)return toast('Enter a valid price');
+  const id=Date.now();
+  const items=Data.items;
+  items.push({id,name,catId,price,desc});
+  Data.items=items;
+  if(currentImg){Data.saveImage(id,currentImg);currentImg=null;}
+  document.getElementById('itemName').value='';
+  document.getElementById('itemPrice').value='';
+  document.getElementById('itemDesc').value='';
+  document.getElementById('itemImg').value='';
+  const box=document.getElementById('imgBox');
+  const img=box.querySelector('img');
+  if(img)img.remove();
+  document.getElementById('imgPlaceholder').style.display='flex';
+  renderItems();toast('Item added');
 }
-function delItem(id) {
-  Data.items = Data.items.filter(i => i.id !== id);
-  Data.deleteImage(id);
-  renderItems();
-  toast('Removed');
+function delItem(id){
+  Data.items=Data.items.filter(i=>i.id!==id);
+  Data.deleteImage(id);renderItems();toast('Removed');
 }
-function renderItems() {
-  const sel = document.getElementById('itemCat');
-  sel.innerHTML = Data.cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-  const list  = document.getElementById('itemList');
-  const items = Data.items;
-  list.innerHTML = items.length
-    ? items.map(it => {
-        const cat = Data.cats.find(c => c.id === it.catId);
-        const lbp = Math.round(it.price * Data.rate).toLocaleString();
-        const img = Data.getImage(it.id);
-        return `<div class="list-item">
-          ${img ? `<img class="item-thumb" src="${img}" alt=""/>` : `<div class="no-thumb">?</div>`}
-          <div style="flex:1;min-width:0;">
-            <div class="list-item-name">${it.name}</div>
-            <div class="list-item-meta">${cat ? cat.name : '-'} - $${it.price.toFixed(2)} - ${lbp} LBP${it.desc ? ' - '+it.desc : ''}</div>
-          </div>
-          <div class="list-item-actions">
-            <span class="tag">$${it.price.toFixed(2)}</span>
-            <button class="btn sm danger" onclick="delItem(${it.id})">Delete</button>
-          </div>
-        </div>`;
-      }).join('')
-    : '<div class="empty"><p>No items yet.</p></div>';
+function renderItems(){
+  const sel=document.getElementById('itemCat');
+  sel.innerHTML=Data.cats.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  const list=document.getElementById('itemList');
+  const items=Data.items;
+  list.innerHTML=items.length
+    ?items.map(it=>{const cat=Data.cats.find(c=>c.id===it.catId);const lbp=Math.round(it.price*Data.rate).toLocaleString();const img=Data.getImage(it.id);return`<div class="list-item">${img?`<img class="item-thumb" src="${img}" alt=""/>`:`<div class="no-thumb">img</div>`}<div style="flex:1;min-width:0;"><div class="list-item-name">${it.name}</div><div class="list-item-meta">${cat?cat.name:'-'} - $${it.price.toFixed(2)} - ${lbp} LBP${it.desc?' - '+it.desc:''}</div></div><div class="list-item-actions"><span class="tag">$${it.price.toFixed(2)}</span><button class="btn sm danger" onclick="delItem(${it.id})">Delete</button></div></div>`;}).join('')
+    :'<div class="empty"><p>No items yet.</p></div>';
 }
 
-function renderHoursForm() {
-  document.getElementById('hoursForm').innerHTML = Data.hours.map((h, i) => `
-    <div class="hour-row">
-      <span class="hour-day">${h.day}</span>
-      <input type="time" value="${h.open}"  id="ho-o-${i}" class="hour-input" ${h.closed?'disabled':''}/>
-      <span class="hour-sep">to</span>
-      <input type="time" value="${h.close}" id="ho-c-${i}" class="hour-input" ${h.closed?'disabled':''}/>
-      <label class="closed-label">
-        <input type="checkbox" id="ho-x-${i}" ${h.closed?'checked':''} onchange="toggleDay(${i})"/> Closed
-      </label>
-    </div>`).join('');
+function renderHoursForm(){
+  document.getElementById('hoursForm').innerHTML=Data.hours.map((h,i)=>`<div class="hour-row"><span class="hour-day">${h.day}</span><input type="time" value="${h.open}" id="ho-o-${i}" class="hour-input" ${h.closed?'disabled':''}/><span class="hour-sep">to</span><input type="time" value="${h.close}" id="ho-c-${i}" class="hour-input" ${h.closed?'disabled':''}/><label class="closed-label"><input type="checkbox" id="ho-x-${i}" ${h.closed?'checked':''} onchange="toggleDay(${i})"/> Closed</label></div>`).join('');
 }
-function toggleDay(i) {
-  const c = document.getElementById('ho-x-'+i).checked;
-  document.getElementById('ho-o-'+i).disabled = c;
-  document.getElementById('ho-c-'+i).disabled = c;
+function toggleDay(i){
+  const c=document.getElementById('ho-x-'+i).checked;
+  document.getElementById('ho-o-'+i).disabled=c;
+  document.getElementById('ho-c-'+i).disabled=c;
 }
-function saveHours() {
-  Data.hours = Data.hours.map((h,i) => ({
-    ...h,
-    open:   document.getElementById('ho-o-'+i).value,
-    close:  document.getElementById('ho-c-'+i).value,
-    closed: document.getElementById('ho-x-'+i).checked,
-  }));
+function saveHours(){
+  Data.hours=Data.hours.map((h,i)=>({...h,open:document.getElementById('ho-o-'+i).value,close:document.getElementById('ho-c-'+i).value,closed:document.getElementById('ho-x-'+i).checked}));
   toast('Hours saved');
 }
 
-function saveRate() { Data.rate = parseInt(document.getElementById('rateInput').value)||90000; toast('Saved'); }
-function saveWA()   { Data.waNum = document.getElementById('waInput').value.trim(); toast('Saved'); }
-function clearAll() {
-  if (!confirm('Delete ALL data?')) return;
-  if (!confirm('Are you sure?')) return;
+function saveRate(){Data.rate=parseInt(document.getElementById('rateInput').value)||90000;toast('Saved');}
+function saveWA(){Data.waNum=document.getElementById('waInput').value.trim();toast('Saved');}
+function clearAll(){
+  if(!confirm('Delete ALL data?'))return;
+  if(!confirm('Are you sure?'))return;
   localStorage.removeItem('ec_menu');
   localStorage.removeItem('ec_cats');
-  initAdmin();
-  toast('Cleared');
+  initAdmin();toast('Cleared');
 }
 
 let toastTimer;
-function toast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('visible');
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('visible');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('visible'), 2500);
+  toastTimer=setTimeout(()=>el.classList.remove('visible'),2500);
 }
 </script>
 </body>
