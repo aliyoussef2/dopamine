@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Elite Coffee – Coffee, Crepes, Pasta & Saj. Bakhoun Highway, North Lebanon. Est. 2026."/>
+  <title>Elite Coffee – Bakhoun Highway</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/base.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/nav.css"/>
+  <link rel="stylesheet" href="css/hero.css"/>
+  <link rel="stylesheet" href="css/menu.css"/>
+  <link rel="stylesheet" href="css/about.css"/>
+  <link rel="stylesheet" href="css/hours.css"/>
+  <link rel="stylesheet" href="css/basket.css"/>
+  <link rel="stylesheet" href="css/footer.css"/>
+  <link rel="stylesheet" href="css/admin.css"/>
+</head>
+<body data-theme="dark">
+
+<!-- ══ MOBILE MENU ══ -->
+<div class="mobile-menu" id="mobile-menu">
+  <button onclick="Nav.scrollTo('home')">Home</button>
+  <button onclick="Nav.scrollTo('menu')">Menu</button>
+  <button onclick="Basket.open()">Basket</button>
+  <button onclick="Nav.scrollTo('about')">About Us</button>
+</div>
+
+<!-- ══ NAV ══ -->
+<nav id="main-nav">
+  <div class="nav-logo" onclick="Nav.scrollTo('home')">
+    <img src="assets/images/logo.png" alt="Elite Coffee"/>
+    <div class="nav-logo-name">Elite <span>Coffee</span></div>
+  </div>
+  <div class="nav-center">
+    <button class="nav-link active" data-section="home"  onclick="Nav.scrollTo('home')">Home</button>
+    <button class="nav-link"        data-section="menu"  onclick="Nav.scrollTo('menu')">Menu</button>
+    <button class="nav-link"        data-section="about" onclick="Nav.scrollTo('about')">About Us</button>
+  </div>
+  <div class="nav-right">
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <span class="toggle-icon sun">☀️</span>
+      <span class="toggle-icon moon">🌙</span>
+    </button>
+    <button class="basket-btn" id="basket-btn">
+      🛍 Basket <span class="basket-count" id="basket-count">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="home">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-rings">
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+  </div>
+  <img class="hero-logo" src="assets/images/logo.png" alt="Elite Coffee"/>
+  <p class="hero-eyebrow">Est. 2026 · Bakhoun Highway · Lebanon</p>
+  <h1 class="hero-title">Elite<br/><em>Coffee</em></h1>
+  <p class="hero-subtitle">Crepes, pasta, saj & specialty coffee — crafted fresh, served with soul, right on the Bakhoun Highway.</p>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="Nav.scrollTo('menu')">📋 View Menu</button>
+    <button class="btn-outline" onclick="Nav.scrollTo('about')">Our Story</button>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-bar"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ══ MENU ══ -->
+<section class="section menu-section" id="menu">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">What we serve</p>
+      <h2 class="section-title">Our Menu</h2>
+      <p class="section-desc">Everything made fresh daily. Add a note to any item and order straight to WhatsApp.</p>
+    </div>
+    <div class="category-row" id="category-row"></div>
+    <div class="menu-grid"    id="menu-grid"></div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section class="section about-section" id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-body reveal-left">
+        <p class="section-label">Our story</p>
+        <h2 class="section-title">More than a café.<br/><em style="font-family:var(--font-serif);font-style:italic;color:var(--gold);">A feeling.</em></h2>
+        <p style="margin-top:1.1rem;">
+          Born in 2026 on the Bakhoun Highway, Elite Coffee is where refined taste
+          meets Lebanese warmth. Every dish is crafted with care, every cup is brewed
+          to perfection — because here, quality is not an option, it's our standard.
+          Whether you're stopping by for a quick espresso or sitting down for pasta,
+          you're always our guest.
+        </p>
+        <div class="info-rows">
+          <div class="info-row reveal" style="transition-delay:.04s">
+            <div class="info-icon">📍</div>
+            <div>
+              <div class="info-label">Location</div>
+              <div class="info-value">
+                Bakhoun Highway, North Lebanon<br/>
+                <a href="https://maps.app.goo.gl/3SbwW4mPs3c5uhKL9" target="_blank"
+                   style="color:var(--gold);font-size:.82rem;">Open in Google Maps →</a>
+              </div>
+            </div>
+          </div>
+          <div class="info-row reveal" style="transition-delay:.1s">
+            <div class="info-icon">📞</div>
+            <div>
+              <div class="info-label">Phone</div>
+              <div class="info-value">
+                <a href="tel:+96170270607">+961 70 270 607</a>
+              </div>
+            </div>
+          </div>
+          <div class="info-row reveal" style="transition-delay:.16s">
+            <div class="info-icon">⏰</div>
+            <div>
+              <div class="info-label">Opening Hours</div>
+              <div class="info-value" id="about-hours">See schedule below ↓</div>
+            </div>
+          </div>
+          <div class="info-row reveal" style="transition-delay:.22s">
+            <div class="info-icon">🛍</div>
+            <div>
+              <div class="info-label">Order Online</div>
+              <div class="info-value">
+                Browse, pick your items, add notes & send your order via WhatsApp.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <div class="about-visual">
+          <div class="about-logo-ring">
+            <img src="assets/images/logo.png" alt="Elite Coffee"/>
+          </div>
+          <div class="about-badge">
+            <div class="about-badge-icon">☕</div>
+            <div>
+              <strong>Est. 2026</strong>
+              <span>Bakhoun, Lebanon</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOURS ══ -->
+<section class="section hours-section" id="hours">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">When to visit</p>
+      <h2 class="section-title">Opening Hours</h2>
+    </div>
+    <div class="hours-grid" id="hours-grid"></div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">Elite Coffee</div>
+        <p>Coffee · Crepes · Pasta · Saj<br/>Bakhoun Highway · Est. 2026</p>
+      </div>
+      <div class="footer-col">
+        <h5>Navigate</h5>
+        <button onclick="Nav.scrollTo('home')">Home</button>
+        <button onclick="Nav.scrollTo('menu')">Menu</button>
+        <button onclick="Nav.scrollTo('about')">About Us</button>
+        <button onclick="Basket.open()">Basket</button>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <a href="tel:+96170270607">+961 70 270 607</a>
+        <a href="https://maps.app.goo.gl/3SbwW4mPs3c5uhKL9" target="_blank">Bakhoun Highway</a>
+        <a href="https://wa.me/96170270607" target="_blank">WhatsApp Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Elite Coffee · All rights reserved</span>
+      <a href="admin/index.html" class="footer-admin" id="footer-admin-btn">⚙ Admin</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ WHATSAPP FLOAT ══ -->
+<a class="wa-float" href="https://wa.me/96170270607" target="_blank" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast"></div>
+
+<!-- ══ BASKET ══ -->
+<div class="basket-overlay" id="basket-overlay"></div>
+<div class="basket-drawer"  id="basket-drawer">
+  <div class="basket-header">
+    <h3>Your <em>Basket</em></h3>
+    <button class="close-drawer" id="close-basket">✕</button>
+  </div>
+  <div class="basket-items" id="basket-items"></div>
+  <div class="customer-form" id="customer-form" style="display:none">
+    <div class="customer-form-label">Your Details</div>
+    <input class="customer-input" id="customer-name"  placeholder="Full name"    type="text"/>
+    <input class="customer-input" id="customer-phone" placeholder="Phone number" type="tel"/>
+  </div>
+  <div class="basket-footer" id="basket-footer" style="display:none">
+    <div class="basket-total">
+      <span class="total-label">Total</span>
+      <div>
+        <div class="total-usd" id="total-usd">$0.00</div>
+        <div class="total-lbp" id="total-lbp">0 LBP</div>
+      </div>
+    </div>
+    <button class="whatsapp-order-btn" id="whatsapp-order-btn">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Order via WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- ══ ADMIN ══ -->
+<div id="admin-overlay">
+  <div class="admin-login" id="admin-login-view">
+    <img class="admin-login-logo" src="assets/images/logo.png" alt="Elite Coffee"/>
+    <h2>Admin Panel</h2>
+    <p>Elite Coffee · Bakhoun</p>
+    <div style="display:flex;flex-direction:column;gap:8px;width:100%;max-width:300px;margin-top:.5rem;">
+      <input class="login-input" id="admin-user" placeholder="Username" type="text"/>
+      <input class="login-input" id="admin-pass" placeholder="Password" type="password"/>
+      <button class="admin-btn" id="admin-login-btn"
+        style="padding:11px;border-radius:10px;font-size:.88rem;margin-top:3px;">
+        Login →
+      </button>
+      <p class="admin-error" id="admin-error">Wrong credentials.</p>
+    </div>
+    <button id="admin-back-btn"
+      style="background:none;border:none;cursor:pointer;color:var(--text-3);
+             font-size:.8rem;margin-top:1rem;font-family:var(--font-sans);">
+      ← Back to site
+    </button>
+  </div>
+  <div class="admin-panel" id="admin-panel">
+    <div class="admin-topbar">
+      <h2>☕ Elite Coffee — Admin</h2>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="theme-toggle theme-toggle-alt" aria-label="Toggle theme">
+          <span class="toggle-icon sun">☀️</span>
+          <span class="toggle-icon moon">🌙</span>
+        </button>
+        <button class="admin-btn" id="admin-close-btn" style="padding:7px 16px;">← Exit</button>
+      </div>
+    </div>
+    <div class="admin-body">
+      <div class="admin-sidebar">
+        <button class="admin-nav-btn active" onclick="Admin.navTo('categories', this)">🗂 Categories</button>
+        <button class="admin-nav-btn"        onclick="Admin.navTo('items', this)">🍽 Items</button>
+        <button class="admin-nav-btn"        onclick="Admin.navTo('hours', this)">⏰ Hours</button>
+        <button class="admin-nav-btn"        onclick="Admin.navTo('settings', this)">⚙️ Settings</button>
+      </div>
+      <div class="admin-main">
+
+        <!-- CATEGORIES -->
+        <div class="admin-section visible" id="admin-categories">
+          <h3>Categories</h3>
+          <div class="admin-card">
+            <h4>Add Category</h4>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+              <div class="admin-group" style="flex:1;min-width:150px;">
+                <label>Name</label>
+                <input class="admin-input" id="cat-name" placeholder="e.g. Crepes"/>
+              </div>
+              <div class="admin-group">
+                <label>Icon</label>
+                <input class="admin-input" id="cat-icon" placeholder="🥞" style="width:65px;"/>
+              </div>
+              <button class="admin-btn" onclick="Admin.addCat()">Add</button>
+            </div>
+          </div>
+          <div class="admin-list" id="admin-cat-list"></div>
+        </div>
+
+        <!-- ITEMS -->
+        <div class="admin-section" id="admin-items">
+          <h3>Menu Items</h3>
+          <div class="admin-card">
+            <h4>Add Item</h4>
+            <div class="admin-row">
+              <div class="admin-group">
+                <label>Name</label>
+                <input class="admin-input" id="item-name" placeholder="e.g. Nutella Crepe"/>
+              </div>
+              <div class="admin-group">
+                <label>Category</label>
+                <select class="admin-select" id="item-cat"></select>
+              </div>
+            </div>
+            <div class="admin-row">
+              <div class="admin-group">
+                <label>Price (USD $)</label>
+                <input class="admin-input" id="item-price" type="number" min="0" step="0.25" placeholder="5.00"/>
+              </div>
+              <div class="admin-group">
+                <label>Description</label>
+                <input class="admin-input" id="item-desc" placeholder="Optional short desc"/>
+              </div>
+            </div>
+            <button class="admin-btn" onclick="Admin.addItem()">Add Item</button>
+          </div>
+          <div class="admin-list" id="admin-item-list"></div>
+        </div>
+
+        <!-- HOURS -->
+        <div class="admin-section" id="admin-hours">
+          <h3>Opening Hours</h3>
+          <div class="admin-card">
+            <h4>Daily Schedule</h4>
+            <div id="hours-form" style="display:flex;flex-direction:column;gap:10px;"></div>
+            <button class="admin-btn" onclick="Admin.saveHours()" style="margin-top:1.1rem;">Save Hours ✓</button>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="admin-section" id="admin-settings">
+          <h3>Settings</h3>
+          <div class="admin-card">
+            <h4>Currency Rate</h4>
+            <div class="admin-group">
+              <label>1 USD = ? LBP</label>
+              <input class="admin-input" id="rate-input" type="number" value="90000" style="max-width:180px;"/>
+            </div>
+            <button class="admin-btn" onclick="Admin.saveRate()" style="margin-top:.9rem;">Save</button>
+          </div>
+          <div class="admin-card">
+            <h4>WhatsApp Number</h4>
+            <div class="admin-group">
+              <label>Number (without + sign)</label>
+              <input class="admin-input" id="wa-input" value="96170270607" style="max-width:220px;"/>
+            </div>
+            <button class="admin-btn" onclick="Admin.saveWA()" style="margin-top:.9rem;">Save</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ JS MODULES ══ -->
+<script src="js/data.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/animations.js"></script>
+<script src="js/hours.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/basket.js"></script>
+<script src="js/order.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/admin.js"></script>
+
+<!-- ══ INIT ══ -->
+<script>
+  Theme.init();
+  Animations.init();
+  Menu.init();
+  Hours.render();
+  Basket.init();
+  Nav.init();
+  Admin.init();
+</script>
+
+</body>
+</html>

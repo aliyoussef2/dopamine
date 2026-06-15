@@ -1,0 +1,95 @@
+/* ══════════════════════════════════════════
+   ELITE COFFEE — Menu Renderer
+   js/menu.js
+   ══════════════════════════════════════════ */
+
+const Menu = {
+  activeCat: null,
+
+  init() {
+    this.activeCat = Data.cats[0]?.id || null;
+    this.render();
+  },
+
+  render() {
+    this._renderPills();
+    this._renderGrid();
+  },
+
+  _renderPills() {
+    const row = document.getElementById('category-row');
+    if (!row) return;
+
+    const cats = Data.cats;
+    if (!this.activeCat || !cats.find(c => c.id === this.activeCat)) {
+      this.activeCat = cats[0]?.id || null;
+    }
+
+    row.innerHTML = cats.map(c => `
+      <button
+        class="category-pill ${c.id === this.activeCat ? 'active' : ''}"
+        onclick="Menu.switchCat('${c.id}', this)">
+        ${c.icon} ${c.name}
+      </button>
+    `).join('');
+  },
+
+  switchCat(id, btn) {
+    this.activeCat = id;
+    document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    this._renderGrid();
+  },
+
+  _renderGrid() {
+    const grid = document.getElementById('menu-grid');
+    if (!grid) return;
+
+    const items = Data.items.filter(i => i.catId === this.activeCat);
+
+    if (!items.length) {
+      grid.innerHTML = '<div class="menu-empty">No items yet — add them from the admin panel.</div>';
+      return;
+    }
+
+    grid.innerHTML = items.map(item => {
+      const lbp = Math.round(item.price * Data.rate).toLocaleString();
+      const img = Data.getImage(item.id);
+
+      const imgHtml = img
+        ? `<div class="card-image">
+             <img src="${img}" alt="${item.name}" loading="lazy"/>
+           </div>`
+        : `<div class="card-image card-image--empty">
+             <span class="card-image-icon">🍽</span>
+           </div>`;
+
+      return `
+        <div class="menu-card" data-item-id="${item.id}">
+          ${imgHtml}
+          <div class="card-body">
+            <div class="card-top">
+              <div class="card-info">
+                <div class="card-name">${item.name}</div>
+                ${item.desc ? `<div class="card-desc">${item.desc}</div>` : ''}
+              </div>
+              <div class="card-price">
+                <div class="price-usd">$${item.price.toFixed(2)}</div>
+                <div class="price-lbp">${lbp} LBP</div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <input
+                class="item-note"
+                id="note-${item.id}"
+                placeholder="Note for this item…"
+              />
+              <button class="add-to-basket" onclick="Basket.add(${item.id})">+</button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    Animations.observe(grid.querySelectorAll('.menu-card'));
+  },
+};

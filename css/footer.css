@@ -1,0 +1,146 @@
+/* ══════════════════════════════════════════
+   ELITE COFFEE — Footer
+   css/footer.css
+   ══════════════════════════════════════════ */
+
+footer {
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+  padding: 3rem 3rem 2rem;
+  transition: background var(--t), border-color var(--t);
+}
+.footer-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+/* ── BRAND ── */
+.footer-brand .footer-logo {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+}
+.footer-brand p {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  margin-top: 0.4rem;
+  line-height: 1.7;
+}
+
+/* ── COLUMNS ── */
+.footer-col h5 {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.9rem;
+}
+.footer-col a,
+.footer-col button {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-3);
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  padding: 4px 0;
+  text-align: left;
+  transition: color 0.2s;
+}
+.footer-col a:hover,
+.footer-col button:hover { color: var(--gold); }
+
+/* ── BOTTOM ── */
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.footer-copy {
+  font-size: 0.7rem;
+  color: var(--text-3);
+}
+.footer-admin {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  color: var(--text-3);
+  padding: 6px 14px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  transition: color 0.2s, border-color 0.2s;
+  letter-spacing: 0.06em;
+}
+.footer-admin:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+/* ── WHATSAPP FLOAT ── */
+.wa-float {
+  position: fixed;
+  bottom: 1.8rem;
+  right: 1.8rem;
+  z-index: 500;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--wa-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(37,211,102,.45);
+  transition: transform 0.3s, box-shadow 0.3s;
+  animation: waPulse 3s ease infinite;
+}
+.wa-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 26px rgba(37,211,102,.55);
+  animation: none;
+}
+.wa-float svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--text);
+  color: var(--bg);
+  padding: 9px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 500;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.26s, transform 0.26s;
+}
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  footer { padding: 2.5rem 1.5rem 1.5rem; }
+  .footer-top { grid-template-columns: 1fr; }
+}

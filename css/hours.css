@@ -1,0 +1,51 @@
+/* ══════════════════════════════════════════
+   ELITE COFFEE — Hours Section
+   css/hours.css
+   ══════════════════════════════════════════ */
+
+.hours-section {
+  background: var(--bg);
+  padding-bottom: 5rem;
+}
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.85rem;
+  margin-top: 2.2rem;
+}
+
+.hour-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.2rem;
+  transition: background var(--t), border-color var(--t), transform 0.28s;
+  opacity: 0;
+  transform: translateY(16px);
+}
+.hour-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hour-card:hover {
+  border-color: rgba(201, 168, 76, 0.45);
+  transform: translateY(-3px);
+}
+
+.hour-day {
+  font-size: 0.63rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.hour-time {
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  color: var(--text);
+}
+.hour-closed {
+  color: var(--text-3);
+  font-style: italic;
+}

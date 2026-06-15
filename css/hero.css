@@ -1,0 +1,166 @@
+/* ══════════════════════════════════════════
+   ELITE COFFEE — Hero Section
+   css/hero.css
+   ══════════════════════════════════════════ */
+
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 2rem 6rem;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* ── AMBIENT ORBS ── */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+}
+.hero-orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(201,168,76,.07) 0%, transparent 70%);
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.hero-orb-2 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(201,168,76,.05) 0%, transparent 70%);
+  bottom: 20%;
+  right: 10%;
+}
+
+/* ── RINGS ── */
+.hero-rings {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.hero-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  transition: border-color var(--t);
+}
+.hero-ring:nth-child(1) { width: 280px; height: 280px; animation: ringPulse 5s ease-in-out infinite; }
+.hero-ring:nth-child(2) { width: 480px; height: 480px; animation: ringPulse 5s ease-in-out 0.7s infinite; opacity: 0.7; }
+.hero-ring:nth-child(3) { width: 700px; height: 700px; animation: ringPulse 5s ease-in-out 1.4s infinite; opacity: 0.4; }
+.hero-ring:nth-child(4) { width: 950px; height: 950px; animation: ringPulse 5s ease-in-out 2.1s infinite; opacity: 0.2; }
+
+/* ── LOGO ── */
+.hero-logo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #000;
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.4), 0 20px 60px rgba(201,168,76,.25);
+  opacity: 0;
+  transform: scale(0.6) rotate(-15deg);
+  animation: heroLogoIn 1s var(--spring) 0.1s forwards;
+  position: relative;
+  z-index: 1;
+  transition: box-shadow var(--t);
+}
+
+/* ── EYEBROW ── */
+.hero-eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 2.2rem 0 0.5rem;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUp 0.6s ease 0.8s forwards;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.5;
+}
+
+/* ── TITLE ── */
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 11vw, 8rem);
+  font-weight: 300;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(22px);
+  animation: fadeUp 0.85s ease 0.95s forwards;
+}
+.hero-title em {
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ── SUBTITLE ── */
+.hero-subtitle {
+  font-size: clamp(0.82rem, 1.8vw, 0.95rem);
+  color: var(--text-3);
+  margin-top: 1.8rem;
+  max-width: 360px;
+  line-height: 1.9;
+  font-weight: 300;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUp 0.65s ease 1.15s forwards;
+}
+
+/* ── CTA ── */
+.hero-cta {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2.8rem;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUp 0.65s ease 1.35s forwards;
+}
+
+/* ── SCROLL HINT ── */
+.hero-scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  opacity: 0;
+  animation: fadeUp 0.6s ease 1.8s forwards;
+}
+.hero-scroll-bar {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+  animation: scrollBar 2s ease-in-out infinite;
+}
