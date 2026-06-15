@@ -36,8 +36,9 @@ nav.scrolled {
   border-radius: 50%;
   object-fit: cover;
   background: #000;
-  transition: transform 0.5s var(--spring);
+  transition: transform 0.5s var(--spring), box-shadow 0.3s;
   filter: drop-shadow(0 2px 8px rgba(201, 168, 76, 0.2));
+  box-shadow: 0 0 0 2px var(--gold);
 }
 .nav-logo:hover img {
   transform: rotate(10deg) scale(1.08);
