@@ -50,3 +50,28 @@ footer { background: var(--bg-3); border-top: 1px solid var(--border); padding: 
 @media (max-width: 700px) {
   .footer-top { grid-template-columns: 1fr; gap: 2rem; }
 }
+/* WHATSAPP FLOAT BUTTON */
+.wa-float {
+  position: fixed;
+  bottom: 1.8rem;
+  right: 1.8rem;
+  width: 56px;
+  height: 56px;
+  background: var(--wa-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 22px rgba(37, 211, 102, 0.4);
+  z-index: 500;
+  transition: background 0.25s, transform 0.25s;
+}
+.wa-float:hover {
+  background: var(--wa-green-dk);
+  transform: scale(1.08);
+}
+.wa-float svg {
+  width: 28px;
+  height: 28px;
+  fill: #fff;
+}

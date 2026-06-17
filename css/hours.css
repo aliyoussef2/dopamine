@@ -18,7 +18,7 @@
   transition: border-color 0.2s, transform 0.2s;
 }
 .hour-card:hover { border-color: var(--gold-light); transform: translateY(-3px); }
-.hour-card.today { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+.hour-card.today { border-color: var(--gold); }
 .hour-day-name {
   font-size: 0.7rem;
   letter-spacing: 0.12em;
