@@ -1,228 +1,28 @@
-/* ══════════════════════════════════════════
-   ELITE COFFEE — Navigation
-   css/nav.css
-   ══════════════════════════════════════════ */
-
-nav {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 1000;
-  height: var(--nav-h);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 3rem;
-  background: var(--nav-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid transparent;
-  transition: background var(--t), border-color 0.3s, box-shadow 0.3s;
-}
-nav.scrolled {
-  border-color: var(--border);
-  box-shadow: var(--shadow-sm);
-}
-
-/* ── LOGO ── */
-.nav-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-}
-.nav-logo img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #000;
-  transition: transform 0.5s var(--spring), box-shadow 0.3s;
-  filter: drop-shadow(0 2px 8px rgba(201, 168, 76, 0.2));
-  box-shadow: 0 0 0 2px var(--gold);
-}
-.nav-logo:hover img {
-  transform: rotate(10deg) scale(1.08);
-}
-.nav-logo-name {
-  font-family: var(--font-serif);
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: 0.02em;
-  transition: color 0.25s;
-}
-.nav-logo-name span { color: var(--gold); }
-.nav-logo:hover .nav-logo-name { color: var(--gold); }
-
-/* ── CENTER LINKS ── */
-.nav-center {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.nav-link {
-  background: none;
-  border: none;
-  padding: 7px 16px;
-  border-radius: var(--radius-sm);
-  font-size: 0.76rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  position: relative;
-  transition: color 0.25s;
-}
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: 2px;
-  left: 16px;
-  right: 16px;
-  height: 1px;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.28s var(--ease);
-}
-.nav-link:hover { color: var(--text); }
-.nav-link.active { color: var(--gold); }
-.nav-link.active::after { transform: scaleX(1); }
-
-/* ── RIGHT SIDE ── */
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
 /* ── THEME TOGGLE ── */
 .theme-toggle {
-  width: 46px;
-  height: 24px;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   border: 1.5px solid var(--border);
   background: var(--bg-3);
   cursor: pointer;
-  position: relative;
-  transition: background 0.4s, border-color 0.4s;
-  flex-shrink: 0;
-}
-.theme-toggle::before {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  transition: transform 0.4s var(--spring);
-  box-shadow: 0 1px 4px rgba(201, 168, 76, 0.4);
-}
-[data-theme="dark"] .theme-toggle::before {
-  transform: translateX(22px);
-}
-.toggle-icon {
-  position: absolute;
-  top: 50%;
-  font-size: 9px;
-  transform: translateY(-50%);
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-.toggle-icon.sun  { left: 4px; }
-.toggle-icon.moon { right: 3px; opacity: 0.3; }
-[data-theme="dark"] .toggle-icon.sun  { opacity: 0.3; }
-[data-theme="dark"] .toggle-icon.moon { opacity: 1; }
-
-/* ── BASKET BUTTON ── */
-.basket-btn {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: var(--gold);
-  color: #fff;
-  border: none;
-  padding: 7px 16px 7px 13px;
-  border-radius: var(--radius-pill);
-  font-size: 0.76rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  box-shadow: 0 2px 12px rgba(201, 168, 76, 0.3);
-  transition: background var(--t), transform 0.2s, box-shadow var(--t);
-}
-.basket-btn:hover {
-  background: var(--gold-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 5px 18px rgba(201, 168, 76, 0.42);
-}
-.basket-count {
-  background: rgba(0, 0, 0, 0.2);
-  min-width: 18px;
-  height: 18px;
-  border-radius: 9px;
-  font-size: 0.65rem;
-  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 4px;
-  transition: transform 0.3s var(--spring);
+  transition: background 0.3s, border-color 0.3s, transform 0.2s;
+  flex-shrink: 0;
+  position: relative;
+  font-size: 0;
 }
-.basket-count.pop { transform: scale(1.7); }
-
-/* ── HAMBURGER ── */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 4px;
-  background: none;
-  border: none;
-  padding: 4px;
+.theme-toggle::before {
+  content: '☀️';
+  font-size: 1rem;
+  line-height: 1;
 }
-.hamburger span {
-  display: block;
-  width: 20px;
-  height: 1.5px;
-  background: var(--text);
-  border-radius: 1px;
-  transition: transform 0.3s, opacity 0.3s;
+[data-theme="dark"] .theme-toggle::before {
+  content: '🌙';
 }
-
-/* ── MOBILE MENU ── */
-.mobile-menu {
-  display: none;
-  position: fixed;
-  top: var(--nav-h);
-  inset: auto 0;
-  z-index: 999;
-  background: var(--nav-bg);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  padding: 1rem 2rem;
-  flex-direction: column;
-  gap: 4px;
-}
-.mobile-menu.open { display: flex; }
-.mobile-menu button,
-.mobile-menu a {
-  background: none;
-  border: none;
-  font-size: 0.9rem;
-  color: var(--text-2);
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-  text-align: left;
-  display: block;
-  transition: color 0.2s;
-}
-.mobile-menu button:hover,
-.mobile-menu a:hover { color: var(--gold); }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 860px) {
-  nav { padding: 0 1.5rem; }
-  .nav-center { display: none; }
-  .hamburger { display: flex; }
+.theme-toggle:hover {
+  border-color: var(--gold);
+  transform: rotate(20deg);
 }
