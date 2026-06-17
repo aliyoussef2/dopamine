@@ -6,10 +6,9 @@
 const K = { rate: 'ec_rate', menu: 'ec_menu', cats: 'ec_cats', hours: 'ec_hours', wa: 'ec_wa' };
 
 const DEFAULT_CATS = [
-  { id: 'crepes', name: 'Crepes', icon: 'Crepes' },
-  { id: 'pasta',  name: 'Pasta',  icon: 'Pasta' },
-  { id: 'coffee', name: 'Coffee', icon: 'Coffee' },
-  { id: 'saj',    name: 'Saj',    icon: 'Saj' },
+  { id: 'crepes',     name: 'Crepes' },
+  { id: 'desserts',   name: 'Desserts' },
+  { id: 'smoothies',  name: 'Smoothies' },
 ];
 
 const DEFAULT_HOURS = [
