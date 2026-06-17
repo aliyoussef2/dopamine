@@ -1,117 +1,77 @@
-/* ══════════════════════════════════════════
-   ELITE COFFEE — Base & Reset
+/* ======================================
+   DOPAMINE -- Base Styles
    css/base.css
-   ══════════════════════════════════════════ */
+   ====================================== */
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  font-size: 16px;
-}
-
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-sans);
   background: var(--bg);
   color: var(--text);
-  overflow-x: hidden;
-  transition: background var(--t), color var(--t);
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
-
-::selection {
-  background: var(--gold);
-  color: #fff;
-}
-
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
-
+::selection { background: var(--gold); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold-light); border-radius: 3px; }
 a { text-decoration: none; color: inherit; }
-img { display: block; max-width: 100%; }
-button { font-family: var(--font-sans); cursor: pointer; }
+button { font-family: var(--font-sans); cursor: pointer; border: none; background: none; }
+img { max-width: 100%; display: block; }
 
-/* ── SECTION WRAPPER ── */
-.section { padding: 6rem 3rem; }
-.section-inner { max-width: 1140px; margin: 0 auto; }
-
-/* ── SECTION LABELS ── */
+.section { padding: 6rem 0; }
+.section-inner { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
 .section-label {
-  font-size: 0.65rem;
-  letter-spacing: 0.26em;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 0.65rem;
+  color: var(--gold-light);
+  margin-bottom: 0.6rem;
 }
-.section-label::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--gold);
-}
-
 .section-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.9rem, 4.5vw, 3rem);
-  font-weight: 400;
-  line-height: 1.1;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 500;
   color: var(--text);
-  margin-bottom: 0.85rem;
+  line-height: 1.15;
 }
-
 .section-desc {
+  margin-top: 0.8rem;
+  font-size: 0.95rem;
   color: var(--text-3);
-  font-size: 0.88rem;
-  line-height: 1.9;
-  max-width: 440px;
-  font-weight: 300;
+  max-width: 480px;
+  line-height: 1.7;
 }
 
-/* ── BUTTONS ── */
 .btn-primary {
   background: var(--gold);
   color: #fff;
-  border: none;
-  padding: 12px 30px;
+  padding: 13px 28px;
   border-radius: var(--radius-pill);
-  font-size: 0.78rem;
+  font-size: 0.86rem;
   font-weight: 600;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  box-shadow: 0 4px 20px var(--gold-glow);
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 18px rgba(107, 70, 43, 0.28);
   transition: background var(--t), transform 0.2s, box-shadow var(--t);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
 }
 .btn-primary:hover {
   background: var(--gold-dark);
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(201, 168, 76, 0.45);
+  box-shadow: 0 8px 26px rgba(107, 70, 43, 0.36);
 }
-
 .btn-outline {
   background: transparent;
-  color: var(--text-2);
-  border: 1px solid var(--border);
-  padding: 12px 30px;
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  padding: 12px 26px;
   border-radius: var(--radius-pill);
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  transition: border-color var(--t), color var(--t), transform 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: border-color 0.25s, color 0.25s, transform 0.2s;
 }
 .btn-outline:hover {
   border-color: var(--gold);
@@ -119,7 +79,27 @@ button { font-family: var(--font-sans); cursor: pointer; }
   transform: translateY(-2px);
 }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 860px) {
-  .section { padding: 4rem 1.5rem; }
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--text);
+  color: var(--bg);
+  padding: 11px 24px;
+  border-radius: 50px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.26s, transform 0.26s;
+}
+.toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 600px) {
+  .section { padding: 4rem 0; }
+  .section-inner { padding: 0 1.25rem; }
 }

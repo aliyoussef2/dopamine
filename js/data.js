@@ -1,22 +1,15 @@
-/* ══════════════════════════════════════════
-   ELITE COFFEE — Data Layer
+/* ======================================
+   DOPAMINE -- Data Layer
    js/data.js
-   ══════════════════════════════════════════ */
+   ====================================== */
 
-const KEYS = {
-  rate:  'ec_rate',
-  menu:  'ec_menu',
-  cats:  'ec_cats',
-  hours: 'ec_hours',
-  wa:    'ec_wa',
-  theme: 'ec_theme',
-};
+const K = { rate: 'ec_rate', menu: 'ec_menu', cats: 'ec_cats', hours: 'ec_hours', wa: 'ec_wa' };
 
 const DEFAULT_CATS = [
-  { id: 'crepes', name: 'Crepes', icon: '🥞' },
-  { id: 'pasta',  name: 'Pasta',  icon: '🍝' },
-  { id: 'coffee', name: 'Coffee', icon: '☕' },
-  { id: 'saj',    name: 'Saj',    icon: '🫓' },
+  { id: 'crepes', name: 'Crepes', icon: 'Crepes' },
+  { id: 'pasta',  name: 'Pasta',  icon: 'Pasta' },
+  { id: 'coffee', name: 'Coffee', icon: 'Coffee' },
+  { id: 'saj',    name: 'Saj',    icon: 'Saj' },
 ];
 
 const DEFAULT_HOURS = [
@@ -30,26 +23,17 @@ const DEFAULT_HOURS = [
 ];
 
 const Data = {
-  get rate()  { return parseInt(localStorage.getItem(KEYS.rate))   || 90000; },
-  get waNum() { return localStorage.getItem(KEYS.wa)               || '96170270607'; },
-  get cats()  { return JSON.parse(localStorage.getItem(KEYS.cats))  || DEFAULT_CATS; },
-  get items() { return JSON.parse(localStorage.getItem(KEYS.menu))  || []; },
-  get hours() { return JSON.parse(localStorage.getItem(KEYS.hours)) || DEFAULT_HOURS; },
-
-  set rate(v)  { localStorage.setItem(KEYS.rate,  v); },
-  set waNum(v) { localStorage.setItem(KEYS.wa,    v); },
-  set cats(v)  { localStorage.setItem(KEYS.cats,  JSON.stringify(v)); },
-  set items(v) { localStorage.setItem(KEYS.menu,  JSON.stringify(v)); },
-  set hours(v) { localStorage.setItem(KEYS.hours, JSON.stringify(v)); },
-
-  // ── IMAGE STORAGE ──
-  saveImage(itemId, base64) {
-    localStorage.setItem('ec_img_' + itemId, base64);
-  },
-  getImage(itemId) {
-    return localStorage.getItem('ec_img_' + itemId) || null;
-  },
-  deleteImage(itemId) {
-    localStorage.removeItem('ec_img_' + itemId);
-  },
+  get rate()  { return parseInt(localStorage.getItem(K.rate))   || 90000; },
+  get waNum() { return localStorage.getItem(K.wa)               || '96170270607'; },
+  get cats()  { return JSON.parse(localStorage.getItem(K.cats))  || DEFAULT_CATS; },
+  get items() { return JSON.parse(localStorage.getItem(K.menu))  || []; },
+  get hours() { return JSON.parse(localStorage.getItem(K.hours)) || DEFAULT_HOURS; },
+  set rate(v)  { localStorage.setItem(K.rate,  v); },
+  set waNum(v) { localStorage.setItem(K.wa,    v); },
+  set cats(v)  { localStorage.setItem(K.cats,  JSON.stringify(v)); },
+  set items(v) { localStorage.setItem(K.menu,  JSON.stringify(v)); },
+  set hours(v) { localStorage.setItem(K.hours, JSON.stringify(v)); },
+  saveImage(id, b64) { localStorage.setItem('ec_img_' + id, b64); },
+  getImage(id)       { return localStorage.getItem('ec_img_' + id) || null; },
+  deleteImage(id)    { localStorage.removeItem('ec_img_' + id); },
 };

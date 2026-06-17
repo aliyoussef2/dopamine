@@ -1,57 +1,46 @@
-/* ══════════════════════════════════════════
-   ELITE COFFEE — WhatsApp Order Builder
+/* ======================================
+   DOPAMINE -- WhatsApp Order
    js/order.js
-   ══════════════════════════════════════════ */
+   ====================================== */
 
-const Order = {
-  send() {
-    const name  = document.getElementById('customer-name').value.trim();
-    const phone = document.getElementById('customer-phone').value.trim();
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('whatsapp-order-btn');
+  if (!btn) return;
 
-    if (!name)                return Toast.show('Please enter your name');
-    if (!phone)               return Toast.show('Please enter your phone');
-    if (!Basket.items.length) return Toast.show('Basket is empty');
+  btn.addEventListener('click', () => {
+    if (!Basket.items.length) return;
 
-    const now     = new Date();
-    const dateStr = now.toLocaleDateString('en-GB', {
-      weekday: 'long',
-      year:    'numeric',
-      month:   'long',
-      day:     'numeric',
-    });
-    const timeStr = now.toLocaleTimeString('en-GB', {
-      hour:   '2-digit',
-      minute: '2-digit',
-    });
+    const name  = document.getElementById('customer-name')?.value.trim() || '';
+    const phone = document.getElementById('customer-phone')?.value.trim() || '';
 
-    const total = Basket.getTotal();
+    if (!name || !phone) {
+      Basket._toast('Please enter your name and phone number');
+      return;
+    }
 
-    let msg = `🛒 *New Order — Elite Coffee*\n`;
-    msg += `━━━━━━━━━━━━━━━━━\n`;
-    msg += `👤 *Name:*  ${name}\n`;
-    msg += `📞 *Phone:* ${phone}\n`;
-    msg += `📅 *Date:*  ${dateStr}\n`;
-    msg += `⏰ *Time:*  ${timeStr}\n`;
-    msg += `━━━━━━━━━━━━━━━━━\n`;
-    msg += `📋 *Order:*\n\n`;
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    Basket.items.forEach((item, i) => {
-      const lbp = Math.round(item.price * item.qty * Data.rate).toLocaleString();
-      msg += `${i + 1}. *${item.name}* × ${item.qty}\n`;
-      msg += `   💰 $${(item.price * item.qty).toFixed(2)} (${lbp} LBP)\n`;
-      if (item.note) msg += `   📝 ${item.note}\n`;
+    let msg = `*New Order - Dopamine*\n`;
+    msg += `Date: ${dateStr} ${timeStr}\n`;
+    msg += `Name: ${name}\n`;
+    msg += `Phone: ${phone}\n\n`;
+    msg += `*Items:*\n`;
+
+    let total = 0;
+    Basket.items.forEach((it, idx) => {
+      msg += `${idx + 1}. ${it.name} - $${it.price.toFixed(2)}`;
+      if (it.note) msg += ` (Note: ${it.note})`;
       msg += `\n`;
+      total += it.price;
     });
 
-    msg += `━━━━━━━━━━━━━━━━━\n`;
-    msg += `💵 *Total: $${total.toFixed(2)}*\n`;
-    msg += `🇱🇧 *Total: ${Math.round(total * Data.rate).toLocaleString()} LBP*\n`;
-    msg += `━━━━━━━━━━━━━━━━━\n`;
-    msg += `📍 Elite Coffee — Bakhoun Highway`;
+    const totalLbp = Math.round(total * Data.rate).toLocaleString();
+    msg += `\n*Total: $${total.toFixed(2)} (${totalLbp} LBP)*`;
 
-    window.open(
-      `https://wa.me/${Data.waNum}?text=${encodeURIComponent(msg)}`,
-      '_blank'
-    );
-  },
-};
+    const waNumber = Data.waNum;
+    const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  });
+});

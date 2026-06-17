@@ -1,51 +1,30 @@
-/* ══════════════════════════════════════════
-   ELITE COFFEE — Hours Section
+/* ======================================
+   DOPAMINE -- Hours
    css/hours.css
-   ══════════════════════════════════════════ */
+   ====================================== */
 
-.hours-section {
-  background: var(--bg);
-  padding-bottom: 5rem;
-}
-
+.hours-section { background: var(--bg); }
 .hours-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 0.85rem;
-  margin-top: 2.2rem;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 2.5rem;
 }
-
 .hour-card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 1rem 1.2rem;
-  transition: background var(--t), border-color var(--t), transform 0.28s;
-  opacity: 0;
-  transform: translateY(16px);
+  padding: 1.2rem 1.3rem;
+  transition: border-color 0.2s, transform 0.2s;
 }
-.hour-card.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.hour-card:hover {
-  border-color: rgba(201, 168, 76, 0.45);
-  transform: translateY(-3px);
-}
-
-.hour-day {
-  font-size: 0.63rem;
-  letter-spacing: 0.15em;
+.hour-card:hover { border-color: var(--gold-light); transform: translateY(-3px); }
+.hour-card.today { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+.hour-day-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
-.hour-time {
-  font-family: var(--font-serif);
-  font-size: 0.98rem;
-  color: var(--text);
-}
-.hour-closed {
-  color: var(--text-3);
-  font-style: italic;
-}
+.hour-time { font-size: 0.92rem; color: var(--text); font-weight: 500; }
+.hour-closed { font-size: 0.92rem; color: var(--text-3); }

@@ -1,7 +1,7 @@
-/* ══════════════════════════════════════════
-   ELITE COFFEE — Menu Renderer
+/* ======================================
+   DOPAMINE -- Menu Renderer
    js/menu.js
-   ══════════════════════════════════════════ */
+   ====================================== */
 
 const Menu = {
   activeCat: null,
@@ -29,7 +29,7 @@ const Menu = {
       <button
         class="category-pill ${c.id === this.activeCat ? 'active' : ''}"
         onclick="Menu.switchCat('${c.id}', this)">
-        ${c.icon} ${c.name}
+        ${c.name}
       </button>
     `).join('');
   },
@@ -48,7 +48,7 @@ const Menu = {
     const items = Data.items.filter(i => i.catId === this.activeCat);
 
     if (!items.length) {
-      grid.innerHTML = '<div class="menu-empty">No items yet — add them from the admin panel.</div>';
+      grid.innerHTML = '<div class="menu-empty">No items yet -- add them from the admin panel.</div>';
       return;
     }
 
@@ -57,12 +57,8 @@ const Menu = {
       const img = Data.getImage(item.id);
 
       const imgHtml = img
-        ? `<div class="card-image">
-             <img src="${img}" alt="${item.name}" loading="lazy"/>
-           </div>`
-        : `<div class="card-image card-image--empty">
-             <span class="card-image-icon">🍽</span>
-           </div>`;
+        ? `<div class="card-image"><img src="${img}" alt="${item.name}" loading="lazy"/></div>`
+        : `<div class="card-image card-image--empty"><span class="card-image-text">No photo</span></div>`;
 
       return `
         <div class="menu-card" data-item-id="${item.id}">
@@ -79,11 +75,7 @@ const Menu = {
               </div>
             </div>
             <div class="card-footer">
-              <input
-                class="item-note"
-                id="note-${item.id}"
-                placeholder="Note for this item…"
-              />
+              <input class="item-note" id="note-${item.id}" placeholder="Note for this item..."/>
               <button class="add-to-basket" onclick="Basket.add(${item.id})">+</button>
             </div>
           </div>

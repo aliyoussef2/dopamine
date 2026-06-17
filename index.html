@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Elite Coffee - Coffee, Crepes, Pasta and Saj. Bakhoun Highway, North Lebanon. Est. 2026."/>
-<title>Elite Coffee - Bakhoun Highway</title>
+<meta name="description" content="Dopamine - Coffee, Crepes, Pasta and Saj. Bakhoun Highway, North Lebanon. Est. 2026."/>
+<title>Dopamine - Bakhoun Highway</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="css/basket.css"/>
 <link rel="stylesheet" href="css/footer.css"/>
 </head>
-<body data-theme="dark">
+<body>
 
 <div class="mobile-menu" id="mobile-menu">
   <button onclick="Nav.scrollTo('home')">Home</button>
@@ -30,8 +30,8 @@
 
 <nav id="main-nav">
   <div class="nav-logo" onclick="Nav.scrollTo('home')">
-    <img src="assets/images/logo.png" alt="Elite Coffee"/>
-    <div class="nav-logo-name">Elite <span>Coffee</span></div>
+    <img src="assets/images/logo.png" alt="Dopamine"/>
+    <div class="nav-logo-name">dopamine</div>
   </div>
   <div class="nav-center">
     <button class="nav-link active" data-section="home" onclick="Nav.scrollTo('home')">Home</button>
@@ -39,7 +39,6 @@
     <button class="nav-link" data-section="about" onclick="Nav.scrollTo('about')">About Us</button>
   </div>
   <div class="nav-right">
-   <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"></button>
     <button class="basket-btn" id="basket-btn">Basket <span class="basket-count" id="basket-count">0</span></button>
     <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
@@ -51,9 +50,9 @@
   <div class="hero-rings">
     <div class="hero-ring"></div><div class="hero-ring"></div><div class="hero-ring"></div><div class="hero-ring"></div>
   </div>
-  <img class="hero-logo" src="assets/images/logo.png" alt="Elite Coffee"/>
+  <img class="hero-logo" src="assets/images/logo.png" alt="Dopamine"/>
   <p class="hero-eyebrow">Est. 2026 - Bakhoun Highway - Lebanon</p>
-  <h1 class="hero-title">Elite<br/><em>Coffee</em></h1>
+  <h1 class="hero-title">dopamine</h1>
   <p class="hero-subtitle">Crepes, pasta, saj and specialty coffee, crafted fresh, served with soul, right on the Bakhoun Highway.</p>
   <div class="hero-cta">
     <button class="btn-primary" onclick="Nav.scrollTo('menu')">View Menu</button>
@@ -80,7 +79,7 @@
       <div class="about-body reveal-left">
         <p class="section-label">Our story</p>
         <h2 class="section-title">More than a cafe.<br/><em style="font-family:var(--font-serif);font-style:italic;color:var(--gold);">A feeling.</em></h2>
-        <p style="margin-top:1.1rem;">Born in 2026 on the Bakhoun Highway, Elite Coffee is where refined taste meets Lebanese warmth. Every dish is crafted with care, every cup is brewed to perfection. Whether you are stopping by for a quick espresso or sitting down for pasta, you are always our guest.</p>
+        <p style="margin-top:1.1rem;">Born in 2026 on the Bakhoun Highway, dopamine is where refined taste meets Lebanese warmth. Every dish is crafted with care, every cup is brewed to perfection. Whether you are stopping by for a quick espresso or sitting down for pasta, you are always our guest.</p>
         <div class="info-rows">
           <div class="info-row reveal" style="transition-delay:.04s">
             <div class="info-icon">Pin</div>
@@ -102,7 +101,7 @@
       </div>
       <div class="reveal-right">
         <div class="about-visual">
-          <div class="about-logo-ring"><img src="assets/images/logo.png" alt="Elite Coffee"/></div>
+          <div class="about-logo-ring"><img src="assets/images/logo.png" alt="Dopamine"/></div>
           <div class="about-badge"><div class="about-badge-icon">Cup</div><div><strong>Est. 2026</strong><span>Bakhoun, Lebanon</span></div></div>
         </div>
       </div>
@@ -121,7 +120,7 @@
   <div class="footer-inner">
     <div class="footer-top">
       <div class="footer-brand">
-        <div class="footer-logo">Elite Coffee</div>
+        <div class="footer-logo">dopamine</div>
         <p>Coffee - Crepes - Pasta - Saj<br/>Bakhoun Highway - Est. 2026</p>
       </div>
       <div class="footer-col">
@@ -139,8 +138,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">2026 Elite Coffee. All rights reserved</span>
-      
+      <span class="footer-copy">2026 dopamine. All rights reserved</span>
     </div>
   </div>
 </footer>
@@ -173,7 +171,6 @@
 </div>
 
 <script src="js/data.js"></script>
-<script src="js/theme.js"></script>
 <script src="js/animations.js"></script>
 <script src="js/hours.js"></script>
 <script src="js/menu.js"></script>
@@ -182,7 +179,6 @@
 <script src="js/nav.js"></script>
 
 <script>
-  Theme.init();
   Animations.init();
   Menu.init();
   Hours.render();
