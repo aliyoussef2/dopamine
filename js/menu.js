@@ -7,8 +7,10 @@ const Menu = {
   activeCat: null,
 
   init() {
-    this.activeCat = Data.cats[0]?.id || null;
-    this.render();
+    Data.onReady(() => {
+      this.activeCat = Data.cats[0]?.id || null;
+      this.render();
+    });
   },
 
   render() {
@@ -61,7 +63,7 @@ const Menu = {
         : `<div class="card-image card-image--empty"><span class="card-image-text">No photo</span></div>`;
 
       return `
-        <div class="menu-card" data-item-id="${item.id}">
+        <div class="menu-card visible" data-item-id="${item.id}">
           ${imgHtml}
           <div class="card-body">
             <div class="card-top">
@@ -76,12 +78,10 @@ const Menu = {
             </div>
             <div class="card-footer">
               <input class="item-note" id="note-${item.id}" placeholder="Note for this item..."/>
-              <button class="add-to-basket" onclick="Basket.add(${item.id})">+</button>
+              <button class="add-to-basket" onclick="Basket.add('${item.id}')">+</button>
             </div>
           </div>
         </div>`;
     }).join('');
-
-    Animations.observe(grid.querySelectorAll('.menu-card'));
   },
 };

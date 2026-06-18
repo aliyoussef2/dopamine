@@ -12,15 +12,13 @@ const Hours = {
     const todayIdx = (new Date().getDay() + 6) % 7;
 
     grid.innerHTML = hours.map((h, i) => `
-      <div class="hour-card reveal ${i === todayIdx ? 'today' : ''}" style="transition-delay:${i * 0.04}s">
+      <div class="hour-card ${i === todayIdx ? 'today' : ''}">
         <div class="hour-day-name">${h.day}</div>
         ${h.closed
           ? '<div class="hour-closed">Closed</div>'
           : `<div class="hour-time">${this._format(h.open)} - ${this._format(h.close)}</div>`}
       </div>
     `).join('');
-
-    Animations.observe(grid.querySelectorAll('.reveal'));
 
     const aboutHours = document.getElementById('about-hours');
     if (aboutHours && hours[todayIdx]) {

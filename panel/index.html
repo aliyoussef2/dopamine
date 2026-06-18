@@ -79,6 +79,7 @@
   .btn.danger{background:#c0392b;}
   .btn.danger:hover{background:#a23226;}
   .btn.sm{padding:7px 14px;font-size:.78rem;}
+  .btn:disabled{opacity:.6;cursor:default;}
 
   .list{display:flex;flex-direction:column;gap:8px;}
   .list-item{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;transition:border-color .2s;}
@@ -223,7 +224,7 @@
             </div>
             <input type="file" id="itemImg" accept="image/*" style="display:none" onchange="previewImg(this)"/>
           </div>
-          <button class="btn" onclick="addItem()" style="margin-top:1rem;">Add Item</button>
+          <button class="btn" id="addItemBtn" onclick="addItem()" style="margin-top:1rem;">Add Item</button>
         </div>
         <div class="list" id="itemList"></div>
       </div>
@@ -268,25 +269,55 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
 <script>
-const K={rate:'ec_rate',menu:'ec_menu',cats:'ec_cats',hours:'ec_hours',wa:'ec_wa'};
-const DEFAULT_CATS=[{id:'crepes',name:'Crepes'},{id:'desserts',name:'Desserts'},{id:'smoothies',name:'Smoothies'}];
-const DEFAULT_HOURS=[{day:'Monday',open:'08:00',close:'22:00',closed:false},{day:'Tuesday',open:'08:00',close:'22:00',closed:false},{day:'Wednesday',open:'08:00',close:'22:00',closed:false},{day:'Thursday',open:'08:00',close:'22:00',closed:false},{day:'Friday',open:'08:00',close:'23:00',closed:false},{day:'Saturday',open:'09:00',close:'23:00',closed:false},{day:'Sunday',open:'09:00',close:'22:00',closed:false}];
-const Data={
-  get rate(){return parseInt(localStorage.getItem(K.rate))||90000;},
-  get waNum(){return localStorage.getItem(K.wa)||'96170270607';},
-  get cats(){return JSON.parse(localStorage.getItem(K.cats))||DEFAULT_CATS;},
-  get items(){return JSON.parse(localStorage.getItem(K.menu))||[];},
-  get hours(){return JSON.parse(localStorage.getItem(K.hours))||DEFAULT_HOURS;},
-  set rate(v){localStorage.setItem(K.rate,v);},
-  set waNum(v){localStorage.setItem(K.wa,v);},
-  set cats(v){localStorage.setItem(K.cats,JSON.stringify(v));},
-  set items(v){localStorage.setItem(K.menu,JSON.stringify(v));},
-  set hours(v){localStorage.setItem(K.hours,JSON.stringify(v));},
-  saveImage(id,b64){localStorage.setItem('ec_img_'+id,b64);},
-  getImage(id){return localStorage.getItem('ec_img_'+id)||null;},
-  deleteImage(id){localStorage.removeItem('ec_img_'+id);},
+const firebaseConfig = {
+  apiKey: "AIzaSyAc3cJatfUEAi9TcefQNqkqaf6zZZskJaA",
+  authDomain: "dopamine-da9ef.firebaseapp.com",
+  projectId: "dopamine-da9ef",
+  storageBucket: "dopamine-da9ef.firebasestorage.app",
+  messagingSenderId: "198256056016",
+  appId: "1:198256056016:web:3a4e943c3c4372730d5"
 };
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const DEFAULT_HOURS=[{day:'Monday',open:'08:00',close:'22:00',closed:false},{day:'Tuesday',open:'08:00',close:'22:00',closed:false},{day:'Wednesday',open:'08:00',close:'22:00',closed:false},{day:'Thursday',open:'08:00',close:'22:00',closed:false},{day:'Friday',open:'08:00',close:'23:00',closed:false},{day:'Saturday',open:'09:00',close:'23:00',closed:false},{day:'Sunday',open:'09:00',close:'22:00',closed:false}];
+
+let cats = [];
+let items = [];
+let hours = DEFAULT_HOURS;
+let rate = 90000;
+let waNum = '96170270607';
+
+function listenAll(){
+  db.collection('categories').orderBy('order').onSnapshot(snap=>{
+    cats = snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderCats();
+    renderItemCatSelect();
+    renderDashboard();
+  });
+  db.collection('items').orderBy('createdAt').onSnapshot(snap=>{
+    items = snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderItems();
+    renderDashboard();
+  });
+  db.collection('settings').doc('hours').onSnapshot(doc=>{
+    hours = doc.exists ? (doc.data().days || DEFAULT_HOURS) : DEFAULT_HOURS;
+    renderHoursForm();
+  });
+  db.collection('settings').doc('main').onSnapshot(doc=>{
+    if(doc.exists){
+      rate = doc.data().rate || 90000;
+      waNum = doc.data().waNum || '96170270607';
+      document.getElementById('rateInput').value = rate;
+      document.getElementById('waInput').value = waNum;
+      renderDashboard();
+    }
+  });
+}
 
 function doLogin(){
   const user=document.getElementById('loginUser').value.trim();
@@ -297,7 +328,7 @@ function doLogin(){
     document.getElementById('loginPage').style.display='none';
     document.getElementById('adminLayout').classList.add('visible');
     err.style.display='none';
-    initAdmin();
+    listenAll();
   }else{
     err.style.display='block';
     document.getElementById('loginPass').value='';
@@ -317,62 +348,57 @@ function goTo(sec,btn){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('sec-'+sec).classList.add('visible');
   btn.classList.add('active');
-  if(sec==='dashboard')renderDashboard();
-  if(sec==='categories')renderCats();
-  if(sec==='items')renderItems();
-  if(sec==='hours')renderHoursForm();
-  if(sec==='settings'){document.getElementById('rateInput').value=Data.rate;document.getElementById('waInput').value=Data.waNum;}
 }
 
-function initAdmin(){
-  renderDashboard();renderCats();renderItems();renderHoursForm();
-  document.getElementById('rateInput').value=Data.rate;
-  document.getElementById('waInput').value=Data.waNum;
-}
 if(sessionStorage.getItem('ec_admin')){
   document.getElementById('loginPage').style.display='none';
   document.getElementById('adminLayout').classList.add('visible');
-  initAdmin();
+  listenAll();
 }
 
 function renderDashboard(){
-  const cats=Data.cats,items=Data.items;
   document.getElementById('statsGrid').innerHTML=`
     <div class="stat-card"><div class="stat-label">Categories</div><div class="stat-value">${cats.length}</div><div class="stat-sub">Active</div></div>
     <div class="stat-card"><div class="stat-label">Menu Items</div><div class="stat-value">${items.length}</div><div class="stat-sub">Total</div></div>
-    <div class="stat-card"><div class="stat-label">Rate</div><div class="stat-value">${(Data.rate/1000).toFixed(0)}K</div><div class="stat-sub">LBP per USD</div></div>
-    <div class="stat-card"><div class="stat-label">WhatsApp</div><div class="stat-value" style="font-size:1rem;margin-top:.4rem;">+${Data.waNum}</div><div class="stat-sub">Order number</div></div>`;
+    <div class="stat-card"><div class="stat-label">Rate</div><div class="stat-value">${(rate/1000).toFixed(0)}K</div><div class="stat-sub">LBP per USD</div></div>
+    <div class="stat-card"><div class="stat-label">WhatsApp</div><div class="stat-value" style="font-size:1rem;margin-top:.4rem;">+${waNum}</div><div class="stat-sub">Order number</div></div>`;
   const recent=[...items].reverse().slice(0,5);
   document.getElementById('recentItems').innerHTML=recent.length
-    ?recent.map(it=>{const cat=cats.find(c=>c.id===it.catId);const img=Data.getImage(it.id);return`<div class="list-item">${img?`<img class="item-thumb" src="${img}" alt=""/>`:`<div class="no-thumb">img</div>`}<div style="flex:1;min-width:0;"><div class="list-item-name">${it.name}</div><div class="list-item-meta">${cat?cat.name:'-'} - $${it.price.toFixed(2)}</div></div><span class="tag">$${it.price.toFixed(2)}</span></div>`;}).join('')
+    ?recent.map(it=>{const cat=cats.find(c=>c.id===it.catId);return`<div class="list-item">${it.image?`<img class="item-thumb" src="${it.image}" alt=""/>`:`<div class="no-thumb">img</div>`}<div style="flex:1;min-width:0;"><div class="list-item-name">${it.name}</div><div class="list-item-meta">${cat?cat.name:'-'} - $${it.price.toFixed(2)}</div></div><span class="tag">$${it.price.toFixed(2)}</span></div>`;}).join('')
     :'<div class="empty"><p>No items yet.</p></div>';
 }
 
-function addCat(){
+async function addCat(){
   const name=document.getElementById('catName').value.trim();
   if(!name)return toast('Enter a name');
-  const cats=Data.cats;
-  cats.push({id:name.toLowerCase().replace(/\s+/g,'-')+'-'+Date.now(),name});
-  Data.cats=cats;
+  const id=name.toLowerCase().replace(/\s+/g,'-')+'-'+Date.now();
+  await db.collection('categories').doc(id).set({name, order: cats.length});
   document.getElementById('catName').value='';
-  renderCats();toast('Category added');
+  toast('Category added');
 }
-function delCat(id){
+async function delCat(id){
   if(!confirm('Delete?'))return;
-  Data.cats=Data.cats.filter(c=>c.id!==id);
-  renderCats();toast('Deleted');
+  await db.collection('categories').doc(id).delete();
+  toast('Deleted');
 }
 function renderCats(){
   const list=document.getElementById('catList');
-  const cats=Data.cats;
   list.innerHTML=cats.length
     ?cats.map(c=>`<div class="list-item"><div><div class="list-item-name">${c.name}</div><div class="list-item-meta">${c.id}</div></div><button class="btn sm danger" onclick="delCat('${c.id}')">Delete</button></div>`).join('')
     :'<div class="empty"><p>No categories yet.</p></div>';
+}
+function renderItemCatSelect(){
+  const sel=document.getElementById('itemCat');
+  sel.innerHTML=cats.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
 }
 
 let currentImg=null;
 function previewImg(input){
   const file=input.files[0];if(!file)return;
+  if(file.size > 900000){
+    toast('Image too large, please use a smaller photo');
+    return;
+  }
   const reader=new FileReader();
   reader.onload=e=>{
     currentImg=e.target.result;
@@ -385,7 +411,7 @@ function previewImg(input){
   reader.readAsDataURL(file);
 }
 
-function addItem(){
+async function addItem(){
   const name=document.getElementById('itemName').value.trim();
   const catId=document.getElementById('itemCat').value;
   const price=parseFloat(document.getElementById('itemPrice').value);
@@ -393,56 +419,75 @@ function addItem(){
   if(!name)return toast('Enter a name');
   if(!catId)return toast('Select a category');
   if(isNaN(price)||price<0)return toast('Enter a valid price');
-  const id=Date.now();
-  const items=Data.items;
-  items.push({id,name,catId,price,desc});
-  Data.items=items;
-  if(currentImg){Data.saveImage(id,currentImg);currentImg=null;}
-  document.getElementById('itemName').value='';
-  document.getElementById('itemPrice').value='';
-  document.getElementById('itemDesc').value='';
-  document.getElementById('itemImg').value='';
-  const box=document.getElementById('imgBox');
-  const img=box.querySelector('img');
-  if(img)img.remove();
-  document.getElementById('imgPlaceholder').style.display='flex';
-  renderItems();toast('Item added');
+
+  const btn = document.getElementById('addItemBtn');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  const doc = {name, catId, price, desc, createdAt: Date.now()};
+  if(currentImg) doc.image = currentImg;
+
+  try{
+    await db.collection('items').add(doc);
+    document.getElementById('itemName').value='';
+    document.getElementById('itemPrice').value='';
+    document.getElementById('itemDesc').value='';
+    document.getElementById('itemImg').value='';
+    currentImg=null;
+    const box=document.getElementById('imgBox');
+    const img=box.querySelector('img');
+    if(img)img.remove();
+    document.getElementById('imgPlaceholder').style.display='flex';
+    toast('Item added');
+  }catch(e){
+    toast('Error saving item');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Add Item';
 }
-function delItem(id){
-  Data.items=Data.items.filter(i=>i.id!==id);
-  Data.deleteImage(id);renderItems();toast('Removed');
+async function delItem(id){
+  await db.collection('items').doc(id).delete();
+  toast('Removed');
 }
 function renderItems(){
-  const sel=document.getElementById('itemCat');
-  sel.innerHTML=Data.cats.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
   const list=document.getElementById('itemList');
-  const items=Data.items;
   list.innerHTML=items.length
-    ?items.map(it=>{const cat=Data.cats.find(c=>c.id===it.catId);const lbp=Math.round(it.price*Data.rate).toLocaleString();const img=Data.getImage(it.id);return`<div class="list-item">${img?`<img class="item-thumb" src="${img}" alt=""/>`:`<div class="no-thumb">img</div>`}<div style="flex:1;min-width:0;"><div class="list-item-name">${it.name}</div><div class="list-item-meta">${cat?cat.name:'-'} - $${it.price.toFixed(2)} - ${lbp} LBP${it.desc?' - '+it.desc:''}</div></div><div class="list-item-actions"><span class="tag">$${it.price.toFixed(2)}</span><button class="btn sm danger" onclick="delItem(${it.id})">Delete</button></div></div>`;}).join('')
+    ?items.map(it=>{const cat=cats.find(c=>c.id===it.catId);const lbp=Math.round(it.price*rate).toLocaleString();return`<div class="list-item">${it.image?`<img class="item-thumb" src="${it.image}" alt=""/>`:`<div class="no-thumb">img</div>`}<div style="flex:1;min-width:0;"><div class="list-item-name">${it.name}</div><div class="list-item-meta">${cat?cat.name:'-'} - $${it.price.toFixed(2)} - ${lbp} LBP${it.desc?' - '+it.desc:''}</div></div><div class="list-item-actions"><span class="tag">$${it.price.toFixed(2)}</span><button class="btn sm danger" onclick="delItem('${it.id}')">Delete</button></div></div>`;}).join('')
     :'<div class="empty"><p>No items yet.</p></div>';
 }
 
 function renderHoursForm(){
-  document.getElementById('hoursForm').innerHTML=Data.hours.map((h,i)=>`<div class="hour-row"><span class="hour-day">${h.day}</span><input type="time" value="${h.open}" id="ho-o-${i}" class="hour-input" ${h.closed?'disabled':''}/><span class="hour-sep">to</span><input type="time" value="${h.close}" id="ho-c-${i}" class="hour-input" ${h.closed?'disabled':''}/><label class="closed-label"><input type="checkbox" id="ho-x-${i}" ${h.closed?'checked':''} onchange="toggleDay(${i})"/> Closed</label></div>`).join('');
+  document.getElementById('hoursForm').innerHTML=hours.map((h,i)=>`<div class="hour-row"><span class="hour-day">${h.day}</span><input type="time" value="${h.open}" id="ho-o-${i}" class="hour-input" ${h.closed?'disabled':''}/><span class="hour-sep">to</span><input type="time" value="${h.close}" id="ho-c-${i}" class="hour-input" ${h.closed?'disabled':''}/><label class="closed-label"><input type="checkbox" id="ho-x-${i}" ${h.closed?'checked':''} onchange="toggleDay(${i})"/> Closed</label></div>`).join('');
 }
 function toggleDay(i){
   const c=document.getElementById('ho-x-'+i).checked;
   document.getElementById('ho-o-'+i).disabled=c;
   document.getElementById('ho-c-'+i).disabled=c;
 }
-function saveHours(){
-  Data.hours=Data.hours.map((h,i)=>({...h,open:document.getElementById('ho-o-'+i).value,close:document.getElementById('ho-c-'+i).value,closed:document.getElementById('ho-x-'+i).checked}));
+async function saveHours(){
+  const newHours=hours.map((h,i)=>({...h,open:document.getElementById('ho-o-'+i).value,close:document.getElementById('ho-c-'+i).value,closed:document.getElementById('ho-x-'+i).checked}));
+  await db.collection('settings').doc('hours').set({days:newHours});
   toast('Hours saved');
 }
 
-function saveRate(){Data.rate=parseInt(document.getElementById('rateInput').value)||90000;toast('Saved');}
-function saveWA(){Data.waNum=document.getElementById('waInput').value.trim();toast('Saved');}
-function clearAll(){
-  if(!confirm('Delete ALL data?'))return;
-  if(!confirm('Are you sure?'))return;
-  localStorage.removeItem('ec_menu');
-  localStorage.removeItem('ec_cats');
-  initAdmin();toast('Cleared');
+async function saveRate(){
+  const v=parseInt(document.getElementById('rateInput').value)||90000;
+  await db.collection('settings').doc('main').set({rate:v, waNum}, {merge:true});
+  toast('Saved');
+}
+async function saveWA(){
+  const v=document.getElementById('waInput').value.trim();
+  await db.collection('settings').doc('main').set({rate, waNum:v}, {merge:true});
+  toast('Saved');
+}
+async function clearAll(){
+  if(!confirm('Delete ALL items and categories?'))return;
+  if(!confirm('Are you sure? This cannot be undone.'))return;
+  const batch = db.batch();
+  items.forEach(it => batch.delete(db.collection('items').doc(it.id)));
+  cats.forEach(c => batch.delete(db.collection('categories').doc(c.id)));
+  await batch.commit();
+  toast('Cleared');
 }
 
 let toastTimer;

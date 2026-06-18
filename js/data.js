@@ -1,14 +1,24 @@
 /* ======================================
-   DOPAMINE -- Data Layer
+   DOPAMINE -- Firebase Data Layer
    js/data.js
    ====================================== */
 
-const K = { rate: 'ec_rate', menu: 'ec_menu', cats: 'ec_cats', hours: 'ec_hours', wa: 'ec_wa' };
+const firebaseConfig = {
+  apiKey: "AIzaSyAc3cJatfUEAi9TcefQNqkqaf6zZZskJaA",
+  authDomain: "dopamine-da9ef.firebaseapp.com",
+  projectId: "dopamine-da9ef",
+  storageBucket: "dopamine-da9ef.firebasestorage.app",
+  messagingSenderId: "198256056016",
+  appId: "1:198256056016:web:3a4e943c3c4372730d5"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 const DEFAULT_CATS = [
-  { id: 'crepes',     name: 'Crepes' },
-  { id: 'desserts',   name: 'Desserts' },
-  { id: 'smoothies',  name: 'Smoothies' },
+  { id: 'crepes',    name: 'Crepes' },
+  { id: 'desserts',  name: 'Desserts' },
+  { id: 'smoothies', name: 'Smoothies' },
 ];
 
 const DEFAULT_HOURS = [
@@ -21,18 +31,74 @@ const DEFAULT_HOURS = [
   { day: 'Sunday',    open: '09:00', close: '22:00', closed: false },
 ];
 
+/* ---- Cached local state, kept in sync with Firestore ---- */
 const Data = {
-  get rate()  { return parseInt(localStorage.getItem(K.rate))   || 90000; },
-  get waNum() { return localStorage.getItem(K.wa)               || '96170270607'; },
-  get cats()  { return JSON.parse(localStorage.getItem(K.cats))  || DEFAULT_CATS; },
-  get items() { return JSON.parse(localStorage.getItem(K.menu))  || []; },
-  get hours() { return JSON.parse(localStorage.getItem(K.hours)) || DEFAULT_HOURS; },
-  set rate(v)  { localStorage.setItem(K.rate,  v); },
-  set waNum(v) { localStorage.setItem(K.wa,    v); },
-  set cats(v)  { localStorage.setItem(K.cats,  JSON.stringify(v)); },
-  set items(v) { localStorage.setItem(K.menu,  JSON.stringify(v)); },
-  set hours(v) { localStorage.setItem(K.hours, JSON.stringify(v)); },
-  saveImage(id, b64) { localStorage.setItem('ec_img_' + id, b64); },
-  getImage(id)       { return localStorage.getItem('ec_img_' + id) || null; },
-  deleteImage(id)    { localStorage.removeItem('ec_img_' + id); },
+  rate: 90000,
+  waNum: '96170270607',
+  cats: DEFAULT_CATS,
+  items: [],
+  hours: DEFAULT_HOURS,
+  images: {},
+  _ready: false,
+  _onReadyCallbacks: [],
+
+  onReady(cb) {
+    if (this._ready) { cb(); } else { this._onReadyCallbacks.push(cb); }
+  },
+
+  _fireReady() {
+    this._ready = true;
+    this._onReadyCallbacks.forEach(cb => cb());
+    this._onReadyCallbacks = [];
+  },
+
+  getImage(id) { return this.images[id] || null; },
+
+  async init() {
+    // settings doc
+    db.collection('settings').doc('main').onSnapshot(doc => {
+      if (doc.exists) {
+        const d = doc.data();
+        this.rate = d.rate || 90000;
+        this.waNum = d.waNum || '96170270607';
+        if (this._ready) { if (window.Menu) Menu.render(); if (window.Hours) Hours.render(); }
+      } else {
+        db.collection('settings').doc('main').set({ rate: 90000, waNum: '96170270607' });
+      }
+    });
+
+    // categories
+    db.collection('categories').orderBy('order').onSnapshot(snap => {
+      if (snap.empty) {
+        DEFAULT_CATS.forEach((c, i) => db.collection('categories').doc(c.id).set({ name: c.name, order: i }));
+        return;
+      }
+      this.cats = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      if (this._ready) { if (window.Menu) Menu.render(); }
+    });
+
+    // hours
+    db.collection('settings').doc('hours').onSnapshot(doc => {
+      if (doc.exists) {
+        this.hours = doc.data().days || DEFAULT_HOURS;
+      } else {
+        db.collection('settings').doc('hours').set({ days: DEFAULT_HOURS });
+      }
+      if (this._ready) { if (window.Hours) Hours.render(); }
+    });
+
+    // items (with embedded image as base64 string field "image")
+    db.collection('items').orderBy('createdAt').onSnapshot(snap => {
+      this.items = snap.docs.map(d => {
+        const data = d.data();
+        if (data.image) this.images[d.id] = data.image;
+        return { id: d.id, name: data.name, catId: data.catId, price: data.price, desc: data.desc || '' };
+      });
+      if (this._ready) { if (window.Menu) Menu.render(); }
+    });
+
+    this._fireReady();
+  },
 };
+
+Data.init();
