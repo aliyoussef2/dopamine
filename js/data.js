@@ -74,7 +74,7 @@ const Data = {
         return;
       }
       this.cats = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      if (this._ready) { if (window.Menu) Menu.render(); }
+      if (window.Menu) Menu.render();
     });
 
     // hours
@@ -94,7 +94,7 @@ const Data = {
         if (data.image) this.images[d.id] = data.image;
         return { id: d.id, name: data.name, catId: data.catId, price: data.price, desc: data.desc || '' };
       });
-      if (this._ready) { if (window.Menu) Menu.render(); }
+      if (window.Menu) Menu.render();
     });
 
     this._fireReady();
