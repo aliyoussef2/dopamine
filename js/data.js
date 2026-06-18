@@ -88,14 +88,17 @@ const Data = {
     });
 
     // items (with embedded image as base64 string field "image")
-    db.collection('items').orderBy('createdAt').onSnapshot(snap => {
-      this.items = snap.docs.map(d => {
-        const data = d.data();
-        if (data.image) this.images[d.id] = data.image;
-        return { id: d.id, name: data.name, catId: data.catId, price: data.price, desc: data.desc || '' };
-      });
-      if (window.Menu) Menu.render();
-    });
+   db.collection('items').orderBy('createdAt').onSnapshot(snap => {
+  this.items = snap.docs.map(d => {
+    const data = d.data();
+    if (data.image) this.images[d.id] = data.image;
+    return { id: d.id, name: data.name, catId: data.catId, price: data.price, desc: data.desc || '' };
+  });
+  if (window.Menu) {
+    Menu.activeCat = null;
+    Menu.render();
+  }
+});
 
     this._fireReady();
   },
