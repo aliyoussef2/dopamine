@@ -18,13 +18,15 @@ const Menu = {
     this._renderGrid();
   },
 
-  _renderPills() {
+ _renderPills() {
     const row = document.getElementById('category-row');
     if (!row) return;
 
     const cats = Data.cats;
+    if (!cats.length) return;
+
     if (!this.activeCat || !cats.find(c => c.id === this.activeCat)) {
-      this.activeCat = cats[0]?.id || null;
+      this.activeCat = cats[0].id;
     }
 
     row.innerHTML = cats.map(c => `
@@ -34,6 +36,8 @@ const Menu = {
         ${c.name}
       </button>
     `).join('');
+
+    this._renderGrid();
   },
 
   switchCat(id, btn) {
