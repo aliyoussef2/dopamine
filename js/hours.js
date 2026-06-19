@@ -9,6 +9,8 @@ const Hours = {
     if (!grid) return;
 
     const hours = Data.hours;
+    if (!hours || !hours.length) return;
+
     const todayIdx = (new Date().getDay() + 6) % 7;
 
     grid.innerHTML = hours.map((h, i) => `

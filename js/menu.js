@@ -7,20 +7,14 @@ const Menu = {
   activeCat: null,
 
   init() {
-    Data.onReady(() => {
-      this.activeCat = Data.cats[0]?.id || null;
-      this.render();
-    });
+    // data.js will call onDataChange() whenever anything updates.
+    // If data already arrived before init() ran, render right away.
+    this.onDataChange();
   },
 
-  render() {
-    this._renderPills();
-    this._renderGrid();
-  },
-
- _renderPills() {
-    const row = document.getElementById('category-row');
-    if (!row) return;
+  // Called by data.js every time categories/items/settings change.
+  onDataChange() {
+    if (!Data.catsLoaded || !Data.itemsLoaded) return;
 
     const cats = Data.cats;
     if (!cats.length) return;
@@ -29,6 +23,19 @@ const Menu = {
       this.activeCat = cats[0].id;
     }
 
+    this.render();
+  },
+
+  render() {
+    this._renderPills();
+    this._renderGrid();
+  },
+
+  _renderPills() {
+    const row = document.getElementById('category-row');
+    if (!row) return;
+
+    const cats = Data.cats;
     row.innerHTML = cats.map(c => `
       <button
         class="category-pill ${c.id === this.activeCat ? 'active' : ''}"
@@ -36,8 +43,6 @@ const Menu = {
         ${c.name}
       </button>
     `).join('');
-
-    this._renderGrid();
   },
 
   switchCat(id, btn) {

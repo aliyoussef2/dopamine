@@ -34,23 +34,29 @@ const DEFAULT_HOURS = [
 const Data = {
   rate: 90000,
   waNum: '96170270607',
-  cats: DEFAULT_CATS,
+  cats: [],
   items: [],
   hours: DEFAULT_HOURS,
   images: {},
-  _catsLoaded: false,
-  _itemsLoaded: false,
+
+  catsLoaded: false,
+  itemsLoaded: false,
+  hoursLoaded: false,
 
   getImage(id) { return this.images[id] || null; },
 
-  _tryRenderMenu() {
-    if (this._catsLoaded && this._itemsLoaded && window.Menu) {
-      Menu.render();
+  // Called every time ANY data changes. Listens are cheap, this just
+  // tells whichever modules exist to redraw with current state.
+  _notify() {
+    if (window.Menu && typeof Menu.onDataChange === 'function') {
+      Menu.onDataChange();
+    }
+    if (window.Hours && typeof Hours.render === 'function' && this.hoursLoaded) {
+      Hours.render();
     }
   },
 
-  async init() {
-    // settings
+  init() {
     db.collection('settings').doc('main').onSnapshot(doc => {
       if (doc.exists) {
         const d = doc.data();
@@ -59,9 +65,9 @@ const Data = {
       } else {
         db.collection('settings').doc('main').set({ rate: 90000, waNum: '96170270607' });
       }
+      this._notify();
     });
 
-    // categories
     db.collection('categories').orderBy('order').onSnapshot(snap => {
       if (snap.empty) {
         DEFAULT_CATS.forEach((c, i) =>
@@ -70,29 +76,28 @@ const Data = {
         return;
       }
       this.cats = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      this._catsLoaded = true;
-      this._tryRenderMenu();
+      this.catsLoaded = true;
+      this._notify();
     });
 
-    // hours
     db.collection('settings').doc('hours').onSnapshot(doc => {
       if (doc.exists) {
         this.hours = doc.data().days || DEFAULT_HOURS;
       } else {
         db.collection('settings').doc('hours').set({ days: DEFAULT_HOURS });
       }
-      if (window.Hours) Hours.render();
+      this.hoursLoaded = true;
+      this._notify();
     });
 
-    // items
     db.collection('items').orderBy('createdAt').onSnapshot(snap => {
       this.items = snap.docs.map(d => {
         const data = d.data();
         if (data.image) this.images[d.id] = data.image;
         return { id: d.id, name: data.name, catId: data.catId, price: data.price, desc: data.desc || '' };
       });
-      this._itemsLoaded = true;
-      this._tryRenderMenu();
+      this.itemsLoaded = true;
+      this._notify();
     });
   },
 };
