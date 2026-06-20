@@ -5,14 +5,27 @@
 
 const Menu = {
   activeCat: null,
+  _initPoll: null,
 
   init() {
-    // data.js will call onDataChange() whenever anything updates.
-    // If data already arrived before init() ran, render right away.
+    // Try immediately in case data already arrived.
     this.onDataChange();
+
+    // Safety net: in case the very first render attempt happens before
+    // Firebase's first snapshot comes back, keep checking briefly.
+    this._initPoll = setInterval(() => {
+      if (Data.catsLoaded && Data.itemsLoaded) {
+        clearInterval(this._initPoll);
+        this.onDataChange();
+      }
+    }, 150);
+
+    // Stop polling after 10s no matter what, to avoid running forever.
+    setTimeout(() => clearInterval(this._initPoll), 10000);
   },
 
-  // Called by data.js every time categories/items/settings change.
+  // Called by data.js every time categories/items/settings change,
+  // and also called directly above as a safety net.
   onDataChange() {
     if (!Data.catsLoaded || !Data.itemsLoaded) return;
 

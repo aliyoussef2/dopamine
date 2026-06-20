@@ -45,13 +45,11 @@ const Data = {
 
   getImage(id) { return this.images[id] || null; },
 
-  // Called every time ANY data changes. Listens are cheap, this just
-  // tells whichever modules exist to redraw with current state.
   _notify() {
     if (window.Menu && typeof Menu.onDataChange === 'function') {
       Menu.onDataChange();
     }
-    if (window.Hours && typeof Hours.render === 'function' && this.hoursLoaded) {
+    if (window.Hours && typeof Hours.render === 'function') {
       Hours.render();
     }
   },

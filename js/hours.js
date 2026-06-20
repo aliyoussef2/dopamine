@@ -4,6 +4,19 @@
    ====================================== */
 
 const Hours = {
+  _initPoll: null,
+
+  init() {
+    this.render();
+    this._initPoll = setInterval(() => {
+      if (Data.hoursLoaded) {
+        clearInterval(this._initPoll);
+        this.render();
+      }
+    }, 150);
+    setTimeout(() => clearInterval(this._initPoll), 10000);
+  },
+
   render() {
     const grid = document.getElementById('hours-grid');
     if (!grid) return;
