@@ -422,13 +422,21 @@ async function addItem(){
 
   const btn = document.getElementById('addItemBtn');
   btn.disabled = true;
-  btn.textContent = 'Saving...';
+  btn.textContent = editingId ? 'Saving...' : 'Saving...';
 
-  const doc = {name, catId, price, desc, createdAt: Date.now()};
+  const doc = {name, catId, price, desc};
   if(currentImg) doc.image = currentImg;
 
   try{
-    await db.collection('items').add(doc);
+    if(editingId){
+      await db.collection('items').doc(editingId).update(doc);
+      toast('Item updated');
+      editingId = null;
+    } else {
+      doc.createdAt = Date.now();
+      await db.collection('items').add(doc);
+      toast('Item added');
+    }
     document.getElementById('itemName').value='';
     document.getElementById('itemPrice').value='';
     document.getElementById('itemDesc').value='';
@@ -438,21 +446,44 @@ async function addItem(){
     const img=box.querySelector('img');
     if(img)img.remove();
     document.getElementById('imgPlaceholder').style.display='flex';
-    toast('Item added');
   }catch(e){
     toast('Error saving item');
   }
   btn.disabled = false;
   btn.textContent = 'Add Item';
 }
+let editingId = null;
+
 async function delItem(id){
   await db.collection('items').doc(id).delete();
   toast('Removed');
 }
+
+function editItem(id){
+  const it = items.find(i => i.id === id);
+  if(!it) return;
+  editingId = id;
+  document.getElementById('itemName').value = it.name;
+  document.getElementById('itemCat').value = it.catId;
+  document.getElementById('itemPrice').value = it.price;
+  document.getElementById('itemDesc').value = it.desc || '';
+  if(it.image){
+    currentImg = it.image;
+    const box=document.getElementById('imgBox');
+    let img=box.querySelector('img');
+    if(!img){img=document.createElement('img');box.appendChild(img);}
+    img.src=currentImg;
+    document.getElementById('imgPlaceholder').style.display='none';
+  }
+  document.getElementById('addItemBtn').textContent = 'Save Changes';
+  document.querySelector('[onclick="goTo(\'items\',this)"]')?.click();
+  window.scrollTo({top:0, behavior:'smooth'});
+  toast('Editing: ' + it.name);
+}
 function renderItems(){
   const list=document.getElementById('itemList');
   list.innerHTML=items.length
-    ?items.map(it=>{const cat=cats.find(c=>c.id===it.catId);const lbp=Math.round(it.price*rate).toLocaleString();return`<div class="list-item">${it.image?`<img class="item-thumb" src="${it.image}" alt=""/>`:`<div class="no-thumb">img</div>`}<div style="flex:1;min-width:0;"><div class="list-item-name">${it.name}</div><div class="list-item-meta">${cat?cat.name:'-'} - $${it.price.toFixed(2)} - ${lbp} LBP${it.desc?' - '+it.desc:''}</div></div><div class="list-item-actions"><span class="tag">$${it.price.toFixed(2)}</span><button class="btn sm danger" onclick="delItem('${it.id}')">Delete</button></div></div>`;}).join('')
+    ?items.map(it=>{const cat=cats.find(c=>c.id===it.catId);const lbp=Math.round(it.price*rate).toLocaleString();return`<div class="list-item">${it.image?`<img class="item-thumb" src="${it.image}" alt=""/>`:`<div class="no-thumb">img</div>`}<div style="flex:1;min-width:0;"><div class="list-item-name">${it.name}</div><div class="list-item-meta">${cat?cat.name:'-'} - $${it.price.toFixed(2)} - ${lbp} LBP${it.desc?' - '+it.desc:''}</div></div><div class="list-item-actions"><span class="tag">$${it.price.toFixed(2)}</span><button class="btn sm" onclick="editItem('${it.id}')">Edit</button><button class="btn sm danger" onclick="delItem('${it.id}')">Delete</button></div></div>`;}).join('')
     :'<div class="empty"><p>No items yet.</p></div>';
 }
 
