@@ -77,40 +77,49 @@ nav.scrolled {
 /* RIGHT SIDE */
 .nav-right { display: flex; align-items: center; gap: 0.6rem; }
 
-/* BASKET BUTTON */
+/* BASKET BUTTON - icon with badge */
 .basket-btn {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  background: var(--gold);
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 7px;
-  background: var(--gold);
-  color: #fff;
-  padding: 7px 16px 7px 13px;
-  border-radius: var(--radius-pill);
-  font-size: 0.76rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  justify-content: center;
   box-shadow: 0 2px 12px rgba(107, 70, 43, 0.3);
   transition: background var(--t), transform 0.2s, box-shadow var(--t);
+  flex-shrink: 0;
 }
 .basket-btn:hover {
   background: var(--gold-dark);
   transform: translateY(-1px);
   box-shadow: 0 5px 18px rgba(107, 70, 43, 0.4);
 }
+.basket-icon {
+  width: 20px;
+  height: 20px;
+  fill: #fff;
+}
 .basket-count {
-  background: rgba(255, 255, 255, 0.25);
-  min-width: 18px;
-  height: 18px;
-  border-radius: 9px;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--text);
+  color: var(--bg);
+  min-width: 19px;
+  height: 19px;
+  border-radius: 50%;
   font-size: 0.65rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 4px;
+  padding: 0 3px;
+  border: 2px solid var(--bg);
   transition: transform 0.3s var(--spring);
 }
-.basket-count.pop { transform: scale(1.7); }
+.basket-count.pop { transform: scale(1.4); }
 
 /* HAMBURGER */
 .hamburger {
