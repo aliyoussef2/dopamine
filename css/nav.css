@@ -82,35 +82,31 @@ nav.scrolled {
   position: relative;
   width: 42px;
   height: 42px;
-  background: var(--gold);
-  border-radius: 50%;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 12px rgba(107, 70, 43, 0.3);
-  transition: background var(--t), transform 0.2s, box-shadow var(--t);
+  transition: transform 0.2s;
   flex-shrink: 0;
 }
 .basket-btn:hover {
-  background: var(--gold-dark);
   transform: translateY(-1px);
-  box-shadow: 0 5px 18px rgba(107, 70, 43, 0.4);
 }
 .basket-icon {
-  width: 20px;
-  height: 20px;
-  fill: #fff;
+  width: 26px;
+  height: 26px;
+  color: var(--text);
 }
 .basket-count {
   position: absolute;
-  top: -4px;
-  right: -4px;
-  background: var(--text);
-  color: var(--bg);
+  top: -2px;
+  right: -2px;
+  background: #e0392b;
+  color: #fff;
   min-width: 19px;
   height: 19px;
   border-radius: 50%;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 700;
   display: flex;
   align-items: center;
