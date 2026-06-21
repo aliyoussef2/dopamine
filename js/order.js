@@ -10,22 +10,23 @@ document.addEventListener('DOMContentLoaded', () => {
   btn.addEventListener('click', () => {
     if (!Basket.items.length) return;
 
-    const name  = document.getElementById('customer-name')?.value.trim() || '';
-    const phone = document.getElementById('customer-phone')?.value.trim() || '';
+  const name     = document.getElementById('customer-name')?.value.trim() || '';
+    const phone    = document.getElementById('customer-phone')?.value.trim() || '';
+    const location = document.getElementById('customer-location')?.value.trim() || '';
 
-    if (!name || !phone) {
-      Basket._toast('Please enter your name and phone number');
+    if (!name || !phone || !location) {
+      Basket._toast('Please enter your name, phone and location');
       return;
     }
-
     const now = new Date();
     const dateStr = now.toLocaleDateString();
     const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    let msg = `*New Order - Dopamine*\n`;
+let msg = `*New Order - Dopamine*\n`;
     msg += `Date: ${dateStr} ${timeStr}\n`;
     msg += `Name: ${name}\n`;
-    msg += `Phone: ${phone}\n\n`;
+    msg += `Phone: ${phone}\n`;
+    msg += `Location: ${location}\n\n`;
     msg += `*Items:*\n`;
 
     let total = 0;
