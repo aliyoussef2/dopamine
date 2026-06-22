@@ -1,0 +1,89 @@
+/* ======================================
+   DOPAMINE -- Splash Screen
+   css/splash.css
+   ====================================== */
+
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #E7CFAD;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#splash-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.splash-glow {
+  position: absolute;
+  width: 520px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(242,228,204,0.88) 0%, rgba(231,207,173,0) 68%);
+  opacity: 0;
+  transform: scale(0.6);
+  animation: splashGlowIn 1.4s ease-out forwards;
+}
+
+.splash-logo-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.72);
+  animation: splashLogoIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 0.15s;
+}
+
+.splash-logo-wrap svg {
+  width: 340px;
+  height: 130px;
+  overflow: visible;
+}
+
+.splash-bar-top {
+  opacity: 0;
+  transform: translateY(-24px);
+  animation: splashBarIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 0.5s;
+}
+.splash-bar-bottom {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: splashBarIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 0.5s;
+}
+
+.splash-wordmark {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: splashTextIn 0.65s ease-out forwards;
+  animation-delay: 0.25s;
+}
+
+@keyframes splashGlowIn {
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes splashLogoIn {
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes splashBarIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes splashTextIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+  .splash-logo-wrap svg {
+    width: 260px;
+    height: 100px;
+  }
+}

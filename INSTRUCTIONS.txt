@@ -1,0 +1,22 @@
+SPLASH SCREEN HTML SNIPPET
+Insert this as the VERY FIRST thing inside <body>, before <div class="mobile-menu">
+
+<div id="splash-screen">
+  <div class="splash-glow"></div>
+  <div class="splash-logo-wrap">
+    <svg viewBox="0 0 340 130" xmlns="http://www.w3.org/2000/svg">
+      <rect class="splash-bar-top" x="191" y="4" width="10" height="30" rx="3" fill="#9A7153"/>
+      <rect class="splash-bar-bottom" x="130" y="92" width="10" height="30" rx="3" fill="#9A7153"/>
+      <text class="splash-wordmark" x="170" y="82" text-anchor="middle" font-family="'Nunito', sans-serif" font-weight="800" font-size="72" fill="#6B462B">dopamine</text>
+    </svg>
+  </div>
+</div>
+
+ALSO ADD these two lines in <head>, with the other CSS links:
+<link rel="stylesheet" href="css/splash.css"/>
+
+AND add this Google Font link in <head> (Nunito is not currently loaded):
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap" rel="stylesheet"/>
+
+ALSO ADD this script tag near your other script tags, ideally FIRST so it runs early:
+<script src="js/splash.js"></script>
