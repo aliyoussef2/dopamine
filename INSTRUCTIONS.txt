@@ -1,22 +1,25 @@
-SPLASH SCREEN HTML SNIPPET
-Insert this as the VERY FIRST thing inside <body>, before <div class="mobile-menu">
+SPLASH SCREEN (v2 - uses your actual logo image, simpler animation)
+
+This version is simpler than the first one: just a soft glow fade-in behind
+your logo, plus the logo itself scaling up with a bouncy spring. No separate
+animated bars -- it uses your real logo.png file directly, so it always
+matches exactly.
+
+STEP 1 -- Insert this as the VERY FIRST thing inside <body>, before
+<div class="mobile-menu">:
 
 <div id="splash-screen">
   <div class="splash-glow"></div>
-  <div class="splash-logo-wrap">
-    <svg viewBox="0 0 340 130" xmlns="http://www.w3.org/2000/svg">
-      <rect class="splash-bar-top" x="191" y="4" width="10" height="30" rx="3" fill="#9A7153"/>
-      <rect class="splash-bar-bottom" x="130" y="92" width="10" height="30" rx="3" fill="#9A7153"/>
-      <text class="splash-wordmark" x="170" y="82" text-anchor="middle" font-family="'Nunito', sans-serif" font-weight="800" font-size="72" fill="#6B462B">dopamine</text>
-    </svg>
+  <div class="splash-logo">
+    <img src="assets/images/logo.png" alt="Dopamine"/>
   </div>
 </div>
 
-ALSO ADD these two lines in <head>, with the other CSS links:
+STEP 2 -- Add this CSS link in <head>, with your other CSS links:
 <link rel="stylesheet" href="css/splash.css"/>
 
-AND add this Google Font link in <head> (Nunito is not currently loaded):
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap" rel="stylesheet"/>
-
-ALSO ADD this script tag near your other script tags, ideally FIRST so it runs early:
+STEP 3 -- Add this script tag near your other script tags (works fine
+anywhere since it just waits for DOMContentLoaded):
 <script src="js/splash.js"></script>
+
+No font changes needed this time since it's an image, not text.

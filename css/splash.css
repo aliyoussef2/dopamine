@@ -22,50 +22,30 @@
 
 .splash-glow {
   position: absolute;
-  width: 520px;
-  height: 280px;
+  width: 560px;
+  height: 320px;
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(242,228,204,0.88) 0%, rgba(231,207,173,0) 68%);
+  background: radial-gradient(ellipse, rgba(242,228,204,0.92) 0%, rgba(231,207,173,0) 65%);
   opacity: 0;
-  transform: scale(0.6);
-  animation: splashGlowIn 1.4s ease-out forwards;
+  transform: scale(0.4);
+  animation: splashGlowIn 1.6s ease-out forwards;
+  animation-delay: 0.1s;
 }
 
-.splash-logo-wrap {
+.splash-logo {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  max-width: 380px;
+  padding: 0 2.5rem;
   opacity: 0;
-  transform: scale(0.72);
-  animation: splashLogoIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  animation-delay: 0.15s;
+  transform: scale(0.88);
+  animation: splashLogoIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 0.2s;
 }
-
-.splash-logo-wrap svg {
-  width: 340px;
-  height: 130px;
-  overflow: visible;
-}
-
-.splash-bar-top {
-  opacity: 0;
-  transform: translateY(-24px);
-  animation: splashBarIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  animation-delay: 0.5s;
-}
-.splash-bar-bottom {
-  opacity: 0;
-  transform: translateY(24px);
-  animation: splashBarIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  animation-delay: 0.5s;
-}
-
-.splash-wordmark {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: splashTextIn 0.65s ease-out forwards;
-  animation-delay: 0.25s;
+.splash-logo img {
+  width: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 @keyframes splashGlowIn {
@@ -74,16 +54,8 @@
 @keyframes splashLogoIn {
   to { opacity: 1; transform: scale(1); }
 }
-@keyframes splashBarIn {
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes splashTextIn {
-  to { opacity: 1; transform: translateY(0); }
-}
 
 @media (max-width: 480px) {
-  .splash-logo-wrap svg {
-    width: 260px;
-    height: 100px;
-  }
+  .splash-logo { max-width: 280px; }
+  .splash-glow { width: 380px; height: 220px; }
 }
