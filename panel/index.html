@@ -384,7 +384,7 @@ async function delCat(id){
 function renderCats(){
   const list=document.getElementById('catList');
   list.innerHTML=cats.length
-    ?cats.map(c=>`<div class="list-item"><div><div class="list-item-name">${c.name}</div><div class="list-item-meta">${c.id}</div></div><button class="btn sm danger" onclick="delCat('${c.id}')">Delete</button></div>`).join('')
+    ?cats.map(c=>`<div class="list-item"><div><div class="list-item-name">${c.name}</div></div><button class="btn sm danger" onclick="delCat('${c.id}')">Delete</button></div>`).join('')
     :'<div class="empty"><p>No categories yet.</p></div>';
 }
 function renderItemCatSelect(){
@@ -483,10 +483,14 @@ function editItem(id){
 function renderItems(){
   const list=document.getElementById('itemList');
   list.innerHTML=items.length
-    ?items.map(it=>{const cat=cats.find(c=>c.id===it.catId);const lbp=Math.round(it.price*rate).toLocaleString();return`<div class="list-item">${it.image?`<img class="item-thumb" src="${it.image}" alt=""/>`:`<div class="no-thumb">img</div>`}<div style="flex:1;min-width:0;"><div class="list-item-name">${it.name}</div><div class="list-item-meta">${cat?cat.name:'-'} - $${it.price.toFixed(2)} - ${lbp} LBP${it.desc?' - '+it.desc:''}</div></div><div class="list-item-actions"><span class="tag">$${it.price.toFixed(2)}</span><button class="btn sm" onclick="editItem('${it.id}')">Edit</button><button class="btn sm danger" onclick="delItem('${it.id}')">Delete</button></div></div>`;}).join('')
+    ?items.map(it=>{const cat=cats.find(c=>c.id===it.catId);const lbp=Math.round(it.price*rate).toLocaleString();const pausedTag=it.paused?'<span class="tag" style="background:#e0392b;color:#fff;border-color:#e0392b;">Paused</span>':'';return`<div class="list-item" style="${it.paused?'opacity:.5;':''}">${it.image?`<img class="item-thumb" src="${it.image}" alt=""/>`:`<div class="no-thumb">img</div>`}<div style="flex:1;min-width:0;"><div class="list-item-name">${it.name} ${pausedTag}</div><div class="list-item-meta">${cat?cat.name:'-'} - $${it.price.toFixed(2)} - ${lbp} LBP${it.desc?' - '+it.desc:''}</div></div><div class="list-item-actions"><button class="btn sm" onclick="togglePause('${it.id}', ${!it.paused})">${it.paused?'Resume':'Pause'}</button><button class="btn sm" onclick="editItem('${it.id}')">Edit</button><button class="btn sm danger" onclick="delItem('${it.id}')">Delete</button></div></div>`;}).join('')
     :'<div class="empty"><p>No items yet.</p></div>';
 }
 
+async function togglePause(id, pauseState){
+  await db.collection('items').doc(id).update({paused: pauseState});
+  toast(pauseState ? 'Item paused' : 'Item resumed');
+}
 function renderHoursForm(){
   document.getElementById('hoursForm').innerHTML=hours.map((h,i)=>`<div class="hour-row"><span class="hour-day">${h.day}</span><input type="time" value="${h.open}" id="ho-o-${i}" class="hour-input" ${h.closed?'disabled':''}/><span class="hour-sep">to</span><input type="time" value="${h.close}" id="ho-c-${i}" class="hour-input" ${h.closed?'disabled':''}/><label class="closed-label"><input type="checkbox" id="ho-x-${i}" ${h.closed?'checked':''} onchange="toggleDay(${i})"/> Closed</label></div>`).join('');
 }

@@ -65,11 +65,11 @@ const Menu = {
     this._renderGrid();
   },
 
-  _renderGrid() {
+_renderGrid() {
     const grid = document.getElementById('menu-grid');
     if (!grid) return;
 
-    const items = Data.items.filter(i => i.catId === this.activeCat);
+    const items = Data.items.filter(i => i.catId === this.activeCat && !i.paused);
 
     if (!items.length) {
       grid.innerHTML = '<div class="menu-empty">No items yet -- add them from the admin panel.</div>';
